@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrat PRO SFR Business — Outremer Telecom</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --color-text-primary:#1A1A2E;
+  --color-text-secondary:#4B5563;
+  --color-text-tertiary:#9CA3AF;
+  --color-background-primary:#FFFFFF;
+  --color-background-secondary:#F9FAFB;
+  --color-background-tertiary:#F3F4F6;
+  --color-border-tertiary:rgba(0,0,0,0.08);
+  --color-border-secondary:rgba(0,0,0,0.15);
+  --color-border-primary:rgba(0,0,0,0.25);
+  --color-background-info:#EFF6FF;
+  --color-border-info:#BFDBFE;
+  --color-text-info:#1E40AF;
+  --color-border-warning:#FCD34D;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'SF Mono','Fira Code',monospace;
+  --border-radius-md:8px;
+  --border-radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --color-text-primary:#F9FAFB;
+    --color-text-secondary:#D1D5DB;
+    --color-text-tertiary:#6B7280;
+    --color-background-primary:#1F2937;
+    --color-background-secondary:#111827;
+    --color-background-tertiary:#0F172A;
+    --color-border-tertiary:rgba(255,255,255,0.08);
+    --color-border-secondary:rgba(255,255,255,0.15);
+    --color-border-primary:rgba(255,255,255,0.25);
+    --color-background-info:#1E3A5F;
+    --color-border-info:#1D4ED8;
+    --color-text-info:#93C5FD;
+    --color-border-warning:#92400E;
+  }
+}
+body{font-family:var(--font-sans);font-size:13px;color:var(--color-text-primary);background:var(--color-background-tertiary);min-height:100vh}
+.wrapper{max-width:960px;margin:0 auto;padding:16px}
+.app{display:flex;flex-direction:column;border-radius:var(--border-radius-lg);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10)}
+.hdr{background:#1A1A2E;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.sfr-logo{background:#E2001A;color:#fff;font-weight:500;font-size:12px;padding:3px 10px;border-radius:4px}
+.hdr-badge{background:rgba(226,0,26,.2);color:#FCA5A5;font-size:10px;padding:2px 10px;border-radius:20px}
+.hdr-wf{font-size:10px;background:rgba(16,185,129,.15);color:#6EE7B7;padding:2px 10px;border-radius:20px}
+.prog-bar{background:#2D2D44;padding:0 20px}
+.steps-row{display:flex;align-items:center;overflow-x:auto;padding:8px 0;scrollbar-width:none;gap:0}
+.steps-row::-webkit-scrollbar{display:none}
+.sdot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;cursor:pointer;border:1.5px solid transparent;flex-shrink:0;transition:all .2s}
+.sdot.done{background:#10B981;color:#fff;border-color:#10B981}
+.sdot.active{background:#E2001A;color:#fff;border-color:#E2001A;box-shadow:0 0 0 3px rgba(226,0,26,.2)}
+.sdot.todo{background:rgba(255,255,255,.08);color:rgba(255,255,255,.3);border-color:rgba(255,255,255,.1)}
+.slbl{font-size:9px;color:rgba(255,255,255,.35);margin-left:4px;white-space:nowrap;max-width:62px;line-height:1.2}
+.slbl.active{color:#fff;font-weight:500}
+.slbl.done{color:#6EE7B7}
+.sconn{width:10px;height:1px;background:rgba(255,255,255,.1);margin:0 3px;flex-shrink:0}
+.sconn.done{background:#10B981}
+.body{display:flex;flex:1;background:var(--color-background-tertiary)}
+.sidebar{width:185px;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);padding:12px 10px;flex-shrink:0;display:flex;flex-direction:column;min-height:520px}
+.sb-sec{font-size:9px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.7px;padding:4px 8px;margin-top:6px}
+.sb-item{font-size:11px;color:var(--color-text-secondary);padding:5px 8px;border-radius:6px;cursor:pointer;transition:all .12s;border:0.5px solid transparent;margin-bottom:1px}
+.sb-item:hover{background:var(--color-background-primary)}
+.sb-item.active{background:var(--color-background-primary);color:#E2001A;border-color:var(--color-border-secondary);font-weight:500}
+.sb-item.done::after{content:" ✓";color:#10B981;font-size:10px}
+.sb-meta{margin-top:auto;padding:10px 8px;border-top:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-tertiary);line-height:1.7}
+.sb-meta b{color:var(--color-text-primary)}
+.main{flex:1;padding:18px 20px;overflow-y:auto;max-height:580px}
+.stag{font-size:10px;font-weight:500;color:#E2001A;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+.stitle{font-size:17px;font-weight:500;margin-bottom:3px}
+.ssub{font-size:12px;color:var(--color-text-secondary);margin-bottom:16px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px}
+.ctitle{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding-bottom:7px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:3px}
+.field label{font-size:11px;color:var(--color-text-secondary);font-weight:500}
+.req{color:#E2001A;margin-left:2px}
+.field input,.field select,.field textarea{font-size:12px;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);width:100%;transition:border .15s;font-family:var(--font-sans)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#E2001A;box-shadow:0 0 0 2px rgba(226,0,26,.1)}
+.field input.vok{border-color:#10B981}
+.field input.verr{border-color:#EF4444}
+.hint{font-size:10px;color:var(--color-text-tertiary);line-height:1.4}
+.errmsg{font-size:10px;color:#EF4444}
+.rbtn{display:flex;align-items:center;gap:5px;padding:5px 11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;font-size:11px;transition:all .12s;background:var(--color-background-primary);user-select:none}
+.rbtn.sel{border-color:#E2001A;background:rgba(226,0,26,.04);color:#E2001A;font-weight:500}
+.rbtn input{display:none}
+.rgroup{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.chk{display:flex;align-items:flex-start;gap:7px;font-size:12px;cursor:pointer;padding:6px 8px;border-radius:var(--border-radius-md);transition:background .1s;line-height:1.4}
+.chk:hover{background:var(--color-background-secondary)}
+.chk input[type=checkbox]{margin-top:2px;accent-color:#E2001A;width:13px;height:13px;flex-shrink:0}
+.cdesc{font-size:10px;color:var(--color-text-tertiary)}
+.terr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.tbtn{padding:16px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);cursor:pointer;text-align:center;transition:all .18s;background:var(--color-background-primary)}
+.tbtn:hover{border-color:#E2001A}
+.tbtn.sel{border-color:#E2001A;background:rgba(226,0,26,.04)}
+.tbtn svg{color:var(--color-text-tertiary)}
+.tbtn.sel svg{color:#E2001A}
+.tname{font-size:12px;font-weight:500;margin-top:6px}
+.tsub{font-size:10px;color:var(--color-text-tertiary)}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dtbtn{padding:11px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);cursor:pointer;transition:all .18s;background:var(--color-background-primary)}
+.dtbtn:hover{border-color:#E2001A}
+.dtbtn.sel{border-color:#E2001A;background:rgba(226,0,26,.04)}
+.dttitle{font-size:12px;font-weight:500}
+.dtsub{font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+.ocard{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;background:var(--color-background-primary);overflow:hidden}
+.ocard.sel{border-color:#E2001A}
+.ohead{padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .12s}
+.ohead:hover{background:var(--color-background-secondary)}
+.ocard.sel .ohead{background:rgba(226,0,26,.02)}
+.oname{font-size:13px;font-weight:500}
+.odesc{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.ochk{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
+.ocard.sel .ochk{background:#E2001A;border-color:#E2001A}
+.obody{padding:14px;border-top:0.5px solid var(--color-border-tertiary)}
+.badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.bmob{background:#EFF6FF;color:#1D4ED8}
+.bfix{background:#F0FDF4;color:#15803D}
+.breq{background:#FEF2F2;color:#B91C1C}
+.bspace{background:#F3F4F6;color:#374151;font-size:9px;padding:1px 5px;border-radius:4px}
+.alert{border-radius:var(--border-radius-md);padding:9px 12px;font-size:11px;margin-bottom:10px;line-height:1.6}
+.ainfo{background:var(--color-background-info);border:0.5px solid var(--color-border-info);color:var(--color-text-info)}
+.awarn{background:#FEF3C7;border:0.5px solid #FCD34D;color:#92400E}
+.alegal{background:#F5F3FF;border:0.5px solid #C4B5FD;color:#5B21B6}
+.legal-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:11px;color:var(--color-text-secondary);line-height:1.7}
+.legal-box b{color:var(--color-text-primary)}
+.fogrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.fopt{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 10px;cursor:pointer;transition:all .15s}
+.fopt:hover{border-color:#E2001A}
+.fopt.sel{border-color:#E2001A;background:rgba(226,0,26,.03)}
+.foname{font-size:11px;font-weight:500}
+.fotag{font-size:9px;color:#E2001A;font-weight:500;background:rgba(226,0,26,.08);padding:1px 6px;border-radius:10px;display:inline-block;margin-bottom:3px}
+.foprice{font-size:13px;font-weight:500;color:#E2001A;margin-top:2px}
+.fodetail{font-size:10px;color:var(--color-text-tertiary)}
+.lineblock{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:6px;overflow:hidden}
+.linehead{padding:7px 12px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.linebody{padding:12px;border-top:0.5px solid var(--color-border-tertiary)}
+.ftable{width:100%;border-collapse:collapse;font-size:11px}
+.ftable th{padding:5px 7px;text-align:left;font-weight:500;color:var(--color-text-secondary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary)}
+.ftable td{padding:5px 7px;border:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.5}
+.na{color:var(--color-text-tertiary);font-style:italic}
+.okc{color:#10B981;font-weight:500}
+.sepa-id{font-family:var(--font-mono);font-size:13px;letter-spacing:2px;background:var(--color-background-secondary);padding:7px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)}
+.recap-sec{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:8px}
+.rtitle{font-size:10px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.rrow{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.rrow:last-child{border-bottom:none}
+.rl{color:var(--color-text-secondary)}
+.rv{color:var(--color-text-primary);font-weight:500;text-align:right;max-width:58%}
+.wfstep{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.wfstep:last-child{border-bottom:none}
+.wfnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.wfnum.cur{background:rgba(226,0,26,.1);color:#E2001A}
+.wfnum.wait{background:var(--color-background-secondary);color:var(--color-text-tertiary);border:0.5px solid var(--color-border-tertiary)}
+.wftitle{font-size:12px;font-weight:500;margin-bottom:2px}
+.wfdesc{font-size:11px;color:var(--color-text-secondary)}
+.consbanner{background:#1A1A2E;color:#fff;padding:10px 14px;border-radius:var(--border-radius-md);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.consicon{background:#E2001A;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.pm{height:3px;background:var(--color-border-tertiary);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.pmf{height:100%;background:#E2001A;border-radius:2px;transition:width .4s}
+.ftr{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--color-background-primary);border-top:0.5px solid var(--color-border-tertiary)}
+.btn{padding:8px 16px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:0.5px solid var(--color-border-secondary);font-family:var(--font-sans)}
+.bprev{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.bprev:hover{background:var(--color-background-tertiary)}
+.bnext{background:#E2001A;color:#fff;border-color:#E2001A}
+.bnext:hover{background:#C00016}
+.bsub{background:#10B981;color:#fff;border-color:#10B981;padding:9px 20px;font-size:13px}
+.bsub:hover{background:#059669}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="app">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="sfr-logo">SFR</div>
+    <div><div style="font-size:12px;font-weight:500">Contrat PRO Business</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Outremer Telecom — v2</div></div>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <div class="hdr-wf">Workflow 2 signatures</div>
+    <div class="hdr-badge" id="sbadge">Étape 1 / 11</div>
+  </div>
+</div>
+<div class="prog-bar"><div class="steps-row" id="srow"></div></div>
+<div class="body">
+  <div class="sidebar" id="sb"><div class="sb-sec">Navigation</div></div>
+  <div class="main" id="main"></div>
+</div>
+<div class="ftr">
+  <div style="font-size:11px;color:var(--color-text-tertiary)">Champs <span style="color:#E2001A">*</span> obligatoires</div>
+  <div style="display:flex;gap:6px">
+    <button class="btn bprev" id="bprev" onclick="nav(-1)">← Précédent</button>
+    <button class="btn bnext" id="bnext" onclick="nav(1)">Suivant →</button>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+const STEPS=[
+  {id:'territoire',s:'Territoire'},{id:'titulaire',s:'Titulaire'},{id:'intervenants',s:'Intervenants'},
+  {id:'facturation',s:'Facturation'},{id:'offres',s:'Offres'},{id:'portabilite',s:'Portabilité'},
+  {id:'annuaire',s:'Annuaire'},{id:'pieces',s:'Pièces'},{id:'sepa',s:'SEPA'},
+  {id:'recap',s:'Récapitulatif'},{id:'conseiller',s:'Conseiller'}
+];
+const D={
+  territoire:'',dossier:'',avenant:'',
+  rs:'',siret:'',ape:'',rue:'',bat:'',cp:'',ville:'',tel:'',email:'',
+  rl_civ:'',rl_nom:'',rl_prenom:'',rl_fn:'',rl_fix:'',rl_mob:'',rl_email:'',
+  sig_diff:false,sig_civ:'',sig_nom:'',sig_prenom:'',sig_fn:'',sig_fix:'',sig_mob:'',sig_email:'',
+  gf_nom:'',gf_prenom:'',gf_fn:'',gf_mob:'',gf_fix:'',gf_email:'',
+  ic_nom:'',ic_prenom:'',ic_fn:'',ic_mob:'',ic_fix:'',ic_email:'',
+  fact_soc:'',fact_svc:'',fact_rue:'',fact_lieu:'',fact_compl:'',fact_bat:'',fact_cp:'',fact_ville:'',
+  offres:[],
+  mob_lines:[{f:'',formule:'',terminal:'',prix:'',liv:false,avt:'',avl:'',_open:true}],
+  carre_lines:[{g10:false,g50:false,mod:'',prix:''}],
+  box_elig:'',box_offre:'',box_tv:false,box_team:false,box_liv:false,box_avt:'',
+  fibre_type:'',fibre_elig:'',fibre_offre:'',fibre_civ:'',fibre_nom:'',fibre_prenom:'',
+  fibre_contact:'',fibre_vendeur:'',fibre_rue:'',fibre_bat:'',fibre_esc:'',fibre_commune:'',fibre_cp:'',fibre_email:'',
+  fibre_multitv:false,fibre_secours:'',fibre_rep:false,fibre_rep_email:'',
+  fibre_av_c:'',fibre_av_l:'',fibre_av_cm:'',
+  b4g_type:'',b4g_elig:'',b4g_nc:'',b4g_liv:false,
+  port:false,port_num:'',port_rio:'',port_op:'',port_date:'',
+  ann_rouge:false,ann_prosp:false,ann_inv:false,ann_inc:false,ann_init:false,ann_email:'',ann_ins:false,
+  pj_statut:'',iban:'',bic:'',rcs:'',
+  consent_cgv:false,consent_mkt:false,fait_a:'',qualite:'',
+  cons_code:'',cons_nom:'',cons_valid:false
+};
+let cur=0;const done=new Set();
+const ref='OTK'+Math.floor(Math.random()*9000000+1000000);
+const CPMAP={'97100':'Basse-Terre','97110':'Pointe-à-Pitre','97122':'Baie-Mahault','97200':'Fort-de-France','97210':'Le Lamentin','97212':'Saint-Joseph','97220':'La Trinité','97300':'Cayenne','97310':'Kourou','97336':'Cayenne','97351':'Matoury','97354':'Rémire-Montjoly','97380':'Kourou'};
+function cpVille(cp){if(CPMAP[cp])return CPMAP[cp];if(cp.startsWith('971'))return 'Guadeloupe';if(cp.startsWith('972'))return 'Martinique';if(cp.startsWith('973'))return 'Guyane';return '';}
+function num(v,mx){return v.replace(/\D/g,'').slice(0,mx);}
+function vSIRET(v){return /^\d{14}$/.test(v.replace(/\s/g,''));}
+function vAPE(v){return /^\d{4}[A-Za-z]$/.test(v);}
+function vEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function vIBAN(v){return v.replace(/\s/g,'').length>=14;}
+function vBIC(v){return /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i.test(v);}
+function lv(id,fn,msg){const el=document.getElementById(id);if(!el)return;const chk=()=>{const ok=fn(el.value);el.classList.toggle('vok',ok&&el.value.length>0);el.classList.toggle('verr',!ok&&el.value.length>0);let em=el.parentElement.querySelector('.errmsg');if(!ok&&el.value.length>0){if(!em){em=document.createElement('div');em.className='errmsg';el.parentElement.appendChild(em);}em.textContent=msg;}else if(em)em.remove();};el.addEventListener('blur',chk);el.addEventListener('input',()=>{if(el.classList.contains('verr'))chk();});}
+function B(id,key,t){const el=document.getElementById(id);if(!el)return;el.value=D[key]||'';const s=()=>{D[key]=t?t(el.value):el.value;};el.addEventListener('input',s);el.addEventListener('change',s);}
+function BC(id,key,cb){const el=document.getElementById(id);if(!el)return;el.checked=!!D[key];el.addEventListener('change',()=>{D[key]=el.checked;if(cb)cb();});}
+const svgs={
+  Guadeloupe:'<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M17 26C15 20 19 14 25 12C31 10 35 16 33 22C37 24 39 30 35 34C33 40 25 42 21 38C15 36 15 32 17 26Z M33 22C37 18 41 20 39 26C37 30 33 30 31 26Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  Martinique:'<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M22 11C27 9 35 13 37 21C39 27 37 33 33 37C29 41 23 41 19 37C15 33 15 25 17 19C18 15 20 12 22 11Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  Guyane:'<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M13 13C17 11 27 11 33 15C39 19 41 27 39 35C37 41 31 45 25 43C19 41 13 37 11 29C9 23 11 15 13 13Z M33 15C37 17 43 19 41 13Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>'
+};
+function renderSteps(){
+  const row=document.getElementById('srow'),sb=document.getElementById('sb');
+  row.innerHTML='';sb.querySelectorAll('.sb-item').forEach(e=>e.remove());
+  STEPS.forEach((s,i)=>{
+    const isDone=done.has(i),isActive=i===cur,cls=isDone?'done':isActive?'active':'todo';
+    row.innerHTML+=`<div class="sdot ${cls}" onclick="jump(${i})" title="${s.s}">${isDone?'✓':i+1}</div><span class="slbl ${cls}">${s.s}</span>${i<STEPS.length-1?`<div class="sconn ${isDone?'done':''}"></div>`:''}`;
+    const el=document.createElement('div');el.className='sb-item'+(isActive?' active':isDone?' done':'');el.textContent=`${i+1}. ${s.s}`;el.onclick=()=>jump(i);
+    sb.insertBefore(el,sb.querySelector('.sb-meta'));
+  });
+}
+function renderMain(){
+  const m=document.getElementById('main');
+  const pct=Math.round((cur/(STEPS.length-1))*100);
+  let h=`<div class="pm"><div class="pmf" style="width:${pct}%"></div></div>`;
+  const id=STEPS[cur].id;
+  if(id==='territoire')h+=rT();
+  else if(id==='titulaire')h+=rTit();
+  else if(id==='intervenants')h+=rInt();
+  else if(id==='facturation')h+=rFact();
+  else if(id==='offres')h+=rOff();
+  else if(id==='portabilite')h+=rPort();
+  else if(id==='annuaire')h+=rAnn();
+  else if(id==='pieces')h+=rPJ();
+  else if(id==='sepa')h+=rSEPA();
+  else if(id==='recap')h+=rRecap();
+  else if(id==='conseiller')h+=rCons();
+  m.innerHTML=h;bindAll();
+  document.getElementById('sbadge').textContent=`Étape ${cur+1} / ${STEPS.length}`;
+  document.getElementById('bprev').style.display=cur===0?'none':'';
+  document.getElementById('bnext').style.display=cur===STEPS.length-1?'none':'';
+  const meta=document.querySelector('.sb-meta');
+  if(meta)meta.innerHTML=`Réf. <b>${ref}</b><br>${D.territoire||'—'}<br>${D.dossier||'—'}`;
+}
+function jump(i){cur=i;renderSteps();renderMain();}
+function nav(d){if(d===1)done.add(cur);cur=Math.max(0,Math.min(STEPS.length-1,cur+d));renderSteps();renderMain();document.getElementById('main').scrollTop=0;}
+
+function rT(){return `<div class="stag">Étape 1</div><div class="stitle">Territoire et type de dossier</div><div class="ssub">Sélectionnez le territoire et la nature du dossier</div>
+<div class="card"><div class="ctitle">Territoire <span class="req">*</span></div>
+<div class="terr-grid">${['Guadeloupe','Martinique','Guyane'].map(t=>`<div class="tbtn ${D.territoire===t?'sel':''}" onclick="D.territoire='${t}';renderMain()">${svgs[t]}<div class="tname">${t}</div><div class="tsub">DOM — Outremer Telecom</div></div>`).join('')}</div></div>
+<div class="card"><div class="ctitle">Nature du dossier <span class="req">*</span></div>
+<div class="type-grid">
+<div class="dtbtn ${D.dossier==='Nouveau contrat'?'sel':''}" onclick="D.dossier='Nouveau contrat';renderMain()"><div class="dttitle">Nouveau contrat</div><div class="dtsub">Nouvelles lignes uniquement</div></div>
+<div class="dtbtn ${D.dossier==='Avenant'?'sel':''}" onclick="D.dossier='Avenant';renderMain()"><div class="dttitle">Avenant</div><div class="dtsub">Ajout de ligne ou modification d'offre existante</div></div>
+</div>${D.dossier==='Avenant'?`<div class="field" style="margin-top:10px"><label>N° de contrat existant <span class="req">*</span></label><input type="text" id="fav" placeholder="Ex : 12345678" value="${D.avenant}"></div>`:''}</div>`;}
+
+function rTit(){return `<div class="stag">Étape 2</div><div class="stitle">Titulaire du contrat</div><div class="ssub">Informations légales — en lettres capitales</div>
+<div class="card"><div class="ctitle">Identification</div><div class="g2">
+<div class="field full"><label>Raison sociale <span class="req">*</span></label><input type="text" id="frs" value="${D.rs}" style="text-transform:uppercase"></div>
+<div class="field"><label>SIRET <span class="req">*</span></label><input type="text" id="fsiret" placeholder="14 chiffres" maxlength="17" value="${D.siret}"><div class="hint">14 chiffres — espaces autorisés</div></div>
+<div class="field"><label>Code APE / NAF <span class="req">*</span></label><input type="text" id="fape" placeholder="Ex : 6110Z" maxlength="5" value="${D.ape}" style="text-transform:uppercase"><div class="hint">4 chiffres + 1 lettre</div></div>
+<div class="field full"><label>Rue <span class="req">*</span></label><input type="text" id="frue" value="${D.rue}"></div>
+<div class="field"><label>Bâtiment / Résidence</label><input type="text" id="fbat" value="${D.bat}"></div>
+<div class="field"><label>Code postal <span class="req">*</span></label><input type="text" id="fcp" placeholder="971xx / 972xx / 973xx" maxlength="5" value="${D.cp}"><div class="hint">Ville pré-remplie automatiquement</div></div>
+<div class="field"><label>Ville <span class="req">*</span></label><input type="text" id="fville" value="${D.ville}"></div>
+<div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" id="ftel" placeholder="0596 XX XX XX" maxlength="10" value="${D.tel}"><div class="hint">10 chiffres max</div></div>
+<div class="field full"><label>E-mail <span class="req">*</span></label><input type="email" id="femail" value="${D.email}"></div>
+</div></div>`;}
+
+function rInt(){return `<div class="stag">Étape 3</div><div class="stitle">Intervenants</div><div class="ssub">Représentant légal, signataire, contacts de gestion</div>
+<div class="card"><div class="ctitle">Représentant légal <span class="req">*</span></div><div class="g2">
+<div class="field full"><div class="rgroup">${['Mme','M.'].map(c=>`<label class="rbtn ${D.rl_civ===c?'sel':''}"><input type="radio" name="rlciv" value="${c}" ${D.rl_civ===c?'checked':''}>${c}</label>`).join('')}</div></div>
+<div class="field"><label>Nom <span class="req">*</span></label><input type="text" id="frlnom" value="${D.rl_nom}" style="text-transform:uppercase"></div>
+<div class="field"><label>Prénom <span class="req">*</span></label><input type="text" id="frlprenom" value="${D.rl_prenom}"></div>
+<div class="field"><label>Fonction <span class="req">*</span></label><input type="text" id="frlfn" value="${D.rl_fn}"></div>
+<div class="field"><label>Tél. fixe</label><input type="tel" id="frlfix" maxlength="10" value="${D.rl_fix}"><div class="hint">10 chiffres max</div></div>
+<div class="field"><label>Tél. mobile <span class="req">*</span></label><input type="tel" id="frlmob" maxlength="10" value="${D.rl_mob}"></div>
+<div class="field full"><label>E-mail obligatoire <span class="req">*</span></label><input type="email" id="frlemail" value="${D.rl_email}"></div>
+</div></div>
+<div class="card"><div class="ctitle">Signataire</div>
+<label class="chk" style="margin-bottom:10px"><input type="checkbox" id="fsigdiff" ${D.sig_diff?'checked':''}><div><div>Le signataire est différent du représentant légal</div><div class="cdesc">Un pouvoir du représentant légal sera requis</div></div></label>
+${D.sig_diff?`<div class="g2">
+<div class="field full"><div class="rgroup">${['Mme','M.'].map(c=>`<label class="rbtn ${D.sig_civ===c?'sel':''}"><input type="radio" name="sigciv" value="${c}" ${D.sig_civ===c?'checked':''}>${c}</label>`).join('')}</div></div>
+<div class="field"><label>Nom <span class="req">*</span></label><input type="text" id="fsignom" value="${D.sig_nom}" style="text-transform:uppercase"></div>
+<div class="field"><label>Prénom</label><input type="text" id="fsigprenom" value="${D.sig_prenom}"></div>
+<div class="field"><label>Fonction</label><input type="text" id="fsigfn" value="${D.sig_fn}"></div>
+<div class="field"><label>Tél. fixe</label><input type="tel" id="fsigfix" maxlength="10" value="${D.sig_fix}"></div>
+<div class="field"><label>Tél. mobile</label><input type="tel" id="fsigmob" maxlength="10" value="${D.sig_mob}"></div>
+<div class="field full"><label>E-mail</label><input type="email" id="fsigemail" value="${D.sig_email}"></div>
+</div>`:'<div style="font-size:11px;color:var(--color-text-tertiary);padding:2px 8px">Le représentant légal est également le signataire.</div>'}
+</div>
+<div class="g2" style="gap:10px">
+<div class="card" style="margin-bottom:0"><div class="ctitle">Gestionnaire de flotte</div>
+${['nom','prenom','fn','mob','fix','email'].map((f,i)=>{const lb=['Nom','Prénom','Fonction','Tél. mobile','Tél. fixe','E-mail'][i];const tp=['text','text','text','tel','tel','email'][i];return `<div class="field" style="margin-bottom:7px"><label>${lb}</label><input type="${tp}" id="fgf${f}" value="${D['gf_'+f]||''}"${tp==='tel'?' maxlength="10"':''}${f==='nom'?' style="text-transform:uppercase"':''}></div>`;}).join('')}
+</div>
+<div class="card" style="margin-bottom:0"><div class="ctitle">Interlocuteur comptable</div>
+${['nom','prenom','fn','mob','fix','email'].map((f,i)=>{const lb=['Nom','Prénom','Fonction','Tél. mobile','Tél. fixe','E-mail'][i];const tp=['text','text','text','tel','tel','email'][i];return `<div class="field" style="margin-bottom:7px"><label>${lb}</label><input type="${tp}" id="fic${f}" value="${D['ic_'+f]||''}"${tp==='tel'?' maxlength="10"':''}${f==='nom'?' style="text-transform:uppercase"':''}></div>`;}).join('')}
+</div></div>`;}
+
+function rFact(){return `<div class="stag">Étape 4</div><div class="stitle">Adresse de facturation</div><div class="ssub">Pré-remplie depuis le titulaire — modifiez si différente</div>
+<div class="alert ainfo">Données pré-remplies depuis le titulaire. Modifiez si l'adresse de facturation diffère.</div>
+<div class="card"><div class="ctitle">Coordonnées</div><div class="g2">
+<div class="field"><label>Société <span class="req">*</span></label><input type="text" id="ffactsoc" value="${D.fact_soc||D.rs}"></div>
+<div class="field"><label>Service</label><input type="text" id="ffactsvc" value="${D.fact_svc}"></div>
+<div class="field full"><label>Rue <span class="req">*</span></label><input type="text" id="ffactrue" value="${D.fact_rue||D.rue}"></div>
+<div class="field"><label>Lieu / Quartier</label><input type="text" id="ffactlieu" value="${D.fact_lieu}"></div>
+<div class="field"><label>Complément</label><input type="text" id="ffactcompl" value="${D.fact_compl}"></div>
+<div class="field"><label>Bâtiment</label><input type="text" id="ffactbat" value="${D.fact_bat||D.bat}"></div>
+<div class="field"><label>Code postal <span class="req">*</span></label><input type="text" id="ffactcp" maxlength="5" value="${D.fact_cp||D.cp}"></div>
+<div class="field"><label>Ville <span class="req">*</span></label><input type="text" id="ffactville" value="${D.fact_ville||D.ville}"></div>
+</div></div>`;}
+
+function rOff(){
+  const isAv=D.dossier==='Avenant';
+  const defs=[{id:'mobile',n:'Forfait PRO 4G/5G',d:"Téléphonie mobile — jusqu'à 5 lignes",b:'bmob'},{id:'carre',n:'Carré PRO Internet',d:"Internet tablette & PC — jusqu'à 5 lignes",b:'bmob'},{id:'box',n:'BOX 4G/5G PRO',d:'Internet + téléphonie VoIP — engagement 12 mois',b:'bfix'},{id:'fibre',n:'Fibre PRO',d:'Internet très haut débit — engagement 12 mois',b:'bfix'},{id:'box4g',n:'Box Téléphonique 4G',d:'Téléphonie fixe illimitée 4G — engagement 12 mois',b:'bfix'}];
+  let h=`<div class="stag">Étape 5</div><div class="stitle">Choix des offres</div><div class="ssub">Sélectionnez et configurez les offres à souscrire</div>`;
+  if(isAv)h+=`<div class="alert ainfo">Mode avenant — pour chaque offre, précisez s'il s'agit d'un <b>ajout de ligne</b> ou d'une <b>modification d'offre existante</b>.</div>`;
+  defs.forEach(o=>{const sel=D.offres.includes(o.id);h+=`<div class="ocard ${sel?'sel':''}" id="oc_${o.id}"><div class="ohead" onclick="toggleO('${o.id}')"><div><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px"><div class="oname">${o.n}</div><span class="badge ${o.b}">${o.b==='bmob'?'Mobile':'Fixe'}</span></div><div class="odesc">${o.d}</div></div><div class="ochk">${sel?'✓':''}</div></div>${sel?`<div class="obody">${rOBody(o.id,isAv)}</div>`:''}</div>`;});
+  h+=`<div class="alert alegal" style="margin-top:10px">Produits et services soumis à TVA. Les mentions légales détaillées de chaque offre sont présentées au client à l'étape Récapitulatif avant signature.</div>`;
+  return h;
+}
+
+function rOBody(id,isAv){
+  if(id==='mobile'){
+    let h='';
+    D.mob_lines.forEach((ln,i)=>{const isSG=ln.formule==='silver'||ln.formule==='gold';
+    h+=`<div class="lineblock"><div class="linehead" onclick="toggleLine(${i})"><span style="font-size:11px;font-weight:500">Ligne ${i+1}${ln.f?' — '+ln.f.toUpperCase():''}</span><div style="display:flex;gap:8px;align-items:center">${i>0?`<span style="font-size:10px;color:#E2001A;cursor:pointer" onclick="rmLine(event,${i})">Supprimer</span>`:''}<span style="font-size:10px;color:var(--color-text-tertiary)">${ln._open?'▼':'▶'}</span></div></div>
+    ${ln._open?`<div class="linebody">
+    <div style="font-size:11px;font-weight:500;margin-bottom:6px">Forfait <span class="req">*</span></div>
+    <div class="fogrid">${[['20go','20 Go BLOQUÉ','14,99 €','+ 2h appels'],['35go','35 Go BLOQUÉ','24,99 €','+ 4h appels'],['200go','200 Go','35,99 €','Appels illimités'],['300go','300 Go','45,99 €','Appels illimités']].map(([k,n,p,d])=>`<div class="fopt ${ln.f===k?'sel':''}" onclick="setLF(${i},'${k}')">${k==='20go'||k==='35go'?`<div class="fotag">BLOQUÉ</div>`:''}<div class="foname">${n}</div><div class="foprice">${p}</div><div class="fodetail">${d}</div></div>`).join('')}</div>
+    <div style="font-size:11px;font-weight:500;margin-bottom:6px">Formule <span class="req">*</span></div>
+    <div class="fogrid">${[['se','Sans mobile, sans engagement',''],['24m','Sans mobile, 24 mois',''],['silver','SILVER — avec mobile, 24 mois','+5 €/mois'],['gold','GOLD — avec mobile, 24 mois','+15 €/mois']].map(([k,n,p])=>`<div class="fopt ${ln.formule===k?'sel':''}" onclick="setLFm(${i},'${k}')"><div class="foname">${n}</div>${p?`<div class="foprice" style="font-size:11px">${p}</div>`:''}</div>`).join('')}</div>
+    ${isSG?`<div style="font-size:11px;font-weight:500;margin-bottom:6px">Terminal <span class="req">*</span></div><div class="g2" style="margin-bottom:8px"><div class="field"><label>Modèle</label><input type="text" id="fmobt${i}" value="${ln.terminal||''}" placeholder="Ex : Samsung Galaxy S25"></div><div class="field"><label>Prix HT</label><input type="text" id="fmobp${i}" value="${ln.prix||''}" placeholder="€ HT"></div></div><label class="chk"><input type="checkbox" id="fmobliv${i}" ${ln.liv?'checked':''}><div>Livraison sur site</div></label>`:`<div class="alert ainfo" style="font-size:11px;margin-bottom:8px">Sélection d'un terminal conditionnée aux formules Silver ou Gold.</div>`}
+    <label class="chk" style="margin-top:6px"><input type="checkbox"><div><div>SFR PRO Team</div><div class="cdesc">Remise sur lignes mobiles — BOX Pro + 1 à 5 lignes compatibles sur même RIB requis</div></div></label>
+    ${isAv?`<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)"><div style="font-size:11px;font-weight:500;margin-bottom:6px">Type d'avenant</div><div class="fogrid"><div class="fopt ${ln.avt==='ajout'?'sel':''}" onclick="setLAT(${i},'ajout')"><div class="foname">Ajout de nouvelle ligne</div></div><div class="fopt ${ln.avt==='modif'?'sel':''}" onclick="setLAT(${i},'modif')"><div class="foname">Modification d'offre existante</div></div></div>${ln.avt==='modif'?`<div class="field" style="margin-top:8px"><label>N° de la ligne à modifier <span class="req">*</span></label><input type="tel" maxlength="10" placeholder="0696 XX XX XX"></div>`:''}</div>`:''}
+    </div>`:''}
+    </div>`;});
+    if(D.mob_lines.length<5)h+=`<button class="btn" style="width:100%;margin-top:6px" onclick="addLine()">+ Ajouter une ligne mobile</button>`;
+    return h;
+  }
+  if(id==='carre'){
+    let h=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr style="background:var(--color-background-secondary)"><th style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary)">Ligne</th><th style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary);text-align:center">10 Go — 9,99 €/mois</th><th style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary);text-align:center">50 Go — 19,99 €/mois</th><th style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary)">Modèle terminal</th><th style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary)">Prix HT</th></tr></thead><tbody>`;
+    D.carre_lines.forEach((ln,i)=>{h+=`<tr><td style="padding:5px 7px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">${i+1}</td><td style="padding:5px;border:0.5px solid var(--color-border-tertiary);text-align:center"><input type="radio" name="carr${i}" value="10" ${ln.g10?'checked':''} style="accent-color:#E2001A" onchange="setCA(${i},'10')"></td><td style="padding:5px;border:0.5px solid var(--color-border-tertiary);text-align:center"><input type="radio" name="carr${i}" value="50" ${ln.g50?'checked':''} style="accent-color:#E2001A" onchange="setCA(${i},'50')"></td><td style="padding:4px 6px;border:0.5px solid var(--color-border-tertiary)"><input type="text" style="font-size:11px;padding:4px 6px;width:100%;border:0.5px solid var(--color-border-tertiary);border-radius:4px;background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="Modèle" value="${ln.mod||''}"></td><td style="padding:4px 6px;border:0.5px solid var(--color-border-tertiary)"><input type="text" style="font-size:11px;padding:4px 6px;width:68px;border:0.5px solid var(--color-border-tertiary);border-radius:4px;background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="€ HT" value="${ln.prix||''}"></td></tr>`;});
+    h+=`</tbody></table></div>`;
+    if(D.carre_lines.length<5)h+=`<button class="btn" style="margin-top:6px;width:100%" onclick="addCL()">+ Ajouter une ligne</button>`;
+    return h;
+  }
+  if(id==='box'){return `<div class="field" style="margin-bottom:10px"><label>ID éligibilité <span class="req">*</span></label><input type="text" id="fboxelig" value="${D.box_elig}" placeholder="Obligatoire — vérifier avant souscription"></div>
+  <div class="fogrid"><div class="fopt ${D.box_offre==='300'?'sel':''}" onclick="D.box_offre='300';renderMain()"><div class="foname">BOX 4G PRO 300 Go</div><div class="foprice">44,99 € HT/mois</div><div class="fodetail">Appels illimités fixes + mobiles — Antilles-Guyane + métropole + 100 destinations</div></div><div class="fopt ${D.box_offre==='500'?'sel':''}" onclick="D.box_offre='500';renderMain()"><div class="foname">BOX 4G ou 5G PRO 500 Go</div><div class="foprice">74,99 € HT/mois</div><div class="fodetail">Selon éligibilité 5G</div></div></div>
+  <label class="chk"><input type="checkbox" id="fboxtv" ${D.box_tv?'checked':''}><div>Option Service TV</div></label>
+  <label class="chk"><input type="checkbox" id="fboxteam" ${D.box_team?'checked':''}><div><div>SFR PRO Team</div><div class="cdesc">1 à 5 lignes mobiles compatibles sur même RIB requis</div></div></label>
+  <label class="chk"><input type="checkbox" id="fboxliv" ${D.box_liv?'checked':''}><div>Livraison sur site</div></label>
+  <div style="margin-top:8px;font-size:10px;color:var(--color-text-tertiary)">Location BOX incluse dans le prix du forfait. Engagement 12 mois.</div>`;}
+  if(id==='fibre'){return `<div class="fogrid" style="margin-bottom:10px">${[['new','Nouveau contrat'],['migr','Migration ADSL / Box 4G-5G vers Fibre'],['modif',"Modification d'offre Fibre"]].map(([k,n])=>`<div class="fopt ${D.fibre_type===k?'sel':''}" onclick="D.fibre_type='${k}';renderMain()"><div class="foname">${n}</div></div>`).join('')}</div>
+  ${D.fibre_type==='modif'?`<div class="g2" style="margin-bottom:10px"><div class="field"><label>N° de contrat <span class="req">*</span></label><input type="text" id="ffibeavc" value="${D.fibre_av_c}"></div><div class="field"><label>N° de ligne <span class="req">*</span></label><input type="tel" id="ffibeavl" maxlength="10" value="${D.fibre_av_l}"></div><div class="field full"><label>Commentaires</label><textarea id="ffibeavcm" style="height:46px">${D.fibre_av_cm}</textarea></div></div>`:''}
+  <div class="card" style="margin-bottom:10px"><div class="ctitle">Adresse d'installation Fibre</div><div class="g2">
+  <div class="field full"><div class="rgroup">${['Mme','Mlle','M.'].map(c=>`<label class="rbtn ${D.fibre_civ===c?'sel':''}"><input type="radio" name="fibciv" value="${c}" ${D.fibre_civ===c?'checked':''}>${c}</label>`).join('')}</div></div>
+  <div class="field"><label>Nom <span class="req">*</span></label><input type="text" id="ffibnom" value="${D.fibre_nom}"></div>
+  <div class="field"><label>Prénom <span class="req">*</span></label><input type="text" id="ffibprenom" value="${D.fibre_prenom}"></div>
+  <div class="field"><label>N° contact installation <span class="req">*</span></label><input type="tel" id="ffibcontact" maxlength="10" value="${D.fibre_contact}"></div>
+  <div class="field"><label>N° du vendeur (pour information)</label><input type="text" id="ffibvendeur" value="${D.fibre_vendeur}"></div>
+  <div class="field full"><label>Rue / Résidence <span class="req">*</span></label><input type="text" id="ffibrue" value="${D.fibre_rue}"></div>
+  <div class="field"><label>Bâtiment</label><input type="text" id="ffibbat" value="${D.fibre_bat}"></div>
+  <div class="field"><label>Escalier / Étage / Porte N°</label><input type="text" id="ffibesc" value="${D.fibre_esc}"></div>
+  <div class="field"><label>Commune <span class="req">*</span></label><input type="text" id="ffibcommune" value="${D.fibre_commune}"></div>
+  <div class="field"><label>Code postal <span class="req">*</span></label><input type="text" id="ffibcp" maxlength="5" value="${D.fibre_cp}"></div>
+  <div class="field full"><label>E-mail</label><input type="email" id="ffibemail" value="${D.fibre_email}"></div>
+  <div class="field full"><label>Code d'éligibilité <span class="req">*</span></label><input type="text" id="ffibelig" placeholder="Mention obligatoire" value="${D.fibre_elig}"></div>
+  </div></div>
+  <div style="font-size:11px;font-weight:500;margin-bottom:6px">Offre Fibre <span class="req">*</span></div>
+  <div class="fogrid" style="margin-bottom:10px">${[['start_sd','START Fibre — sans décodeur','54,99 € HT/mois'],['start','START Fibre — avec décodeur TV','54,99 € HT/mois'],['prime_sd','PRIME Fibre — sans décodeur','69,99 € HT/mois'],['prime','PRIME Fibre — avec décodeur TV','69,99 € HT/mois']].map(([k,n,p])=>`<div class="fopt ${D.fibre_offre===k?'sel':''}" onclick="D.fibre_offre='${k}';renderMain()"><div class="foname">${n}</div><div class="foprice">${p}</div></div>`).join('')}</div>
+  <div class="alert awarn">Frais d'activation Fibre : 50 € facturés sur les 3 premières factures</div>
+  ${D.fibre_offre?`<div class="card" style="margin-bottom:10px"><div class="ctitle">Options de services</div><div style="overflow-x:auto"><table class="ftable"><thead><tr><th>Option</th><th>START sans décodeur</th><th>START avec décodeur</th><th>PRIME sans décodeur</th><th>PRIME avec décodeur</th></tr></thead><tbody>
+  <tr><td style="font-weight:500">Décodeur TV</td><td class="na">N/A</td><td class="okc">Inclus sur demande<br><span style="font-size:10px;color:var(--color-text-tertiary)">Activation 40 € / 1ère facture</span></td><td class="na">N/A</td><td class="okc">Inclus sur demande<br><span style="font-size:10px;color:var(--color-text-tertiary)">Activation 40 € / 1ère facture</span></td></tr>
+  <tr><td style="font-weight:500">Multi-TV</td><td class="na">N/A (sans décodeur)</td><td><label class="chk" style="padding:0"><input type="checkbox" id="ffibmtv" ${D.fibre_multitv?'checked':''}><span>Option 9 €/mois</span></label></td><td class="na">N/A (sans décodeur)</td><td><label class="chk" style="padding:0"><input type="checkbox"><span>Option 9 €/mois</span></label></td></tr>
+  <tr><td style="font-weight:500">Répéteur Smart Wi-Fi<br><span class="bspace">Après installation</span></td><td colspan="2">Option 3 €/mois</td><td colspan="2" class="okc">Inclus sur demande<br><span style="font-size:10px;color:var(--color-text-tertiary)">Activation 10 € / 1ère facture</span></td></tr>
+  <tr><td style="font-weight:500">2ème ligne tél.<br><span class="bspace">Après installation</span></td><td colspan="2">START : 15 €/mois + terminal<br><span style="font-size:10px;color:var(--color-text-tertiary)">Bureau 3 €/mois ou portable 6 €/mois</span></td><td colspan="2" class="okc">PRIME : Inclus sur demande<br><span style="font-size:10px;color:var(--color-text-tertiary)">Activation 40 €. Bureau inclus ou portable 3 €/mois</span></td></tr>
+  <tr><td style="font-weight:500">Module SFP</td><td colspan="4">40 € à l'achat — uniquement avec offre 8 Gb/s</td></tr>
+  </tbody></table></div>
+  <div class="alert awarn" style="margin-top:10px;font-size:11px">La 2ème ligne téléphonique, le répéteur Smart Wi-Fi et le module SFP sont souscriptibles <b>uniquement après installation de la Fibre</b>, depuis l'<b>Espace Entreprises SFR</b>.</div></div>`:''}
+  <div class="card" style="margin-bottom:10px"><div class="ctitle">Numéro de secours</div><div class="field"><label>Numéro de la ligne de secours</label><input type="tel" id="ffibsec" maxlength="10" placeholder="Fixe ou mobile Antilles-Guyane" value="${D.fibre_secours}"><div class="hint">En cas de perte totale du service Fibre, les appels sont automatiquement redirigés vers ce numéro.</div></div></div>
+  <div class="card"><div class="ctitle">Répondeur</div><label class="chk"><input type="checkbox" id="ffibbrep" ${D.fibre_rep?'checked':''}><div>Notification par e-mail des messages vocaux en attente</div></label>${D.fibre_rep?`<div class="field" style="margin-top:8px"><label>E-mail notifications répondeur</label><input type="email" id="ffibrepemail" value="${D.fibre_rep_email}"></div>`:''}</div>`;}
+  if(id==='box4g'){return `<div class="fogrid" style="margin-bottom:10px"><div class="fopt ${D.b4g_type==='new'?'sel':''}" onclick="D.b4g_type='new';renderMain()"><div class="foname">Nouveau contrat</div></div><div class="fopt ${D.b4g_type==='modif'?'sel':''}" onclick="D.b4g_type='modif';renderMain()"><div class="foname">Modification d'offre</div></div></div>
+  ${D.b4g_type==='modif'?`<div class="field" style="margin-bottom:10px"><label>N° de contrat <span class="req">*</span></label><input type="text" id="fb4gnc" value="${D.b4g_nc}"></div>`:''}
+  <div class="field" style="margin-bottom:10px"><label>ID éligibilité <span class="req">*</span></label><input type="text" id="fb4gelig" value="${D.b4g_elig}" placeholder="Obligatoire"></div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500">Box Téléphonique 4G</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px">Appels illimités vers fixes et mobiles — Guadeloupe, Guyane, Martinique et Métropole</div><div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">Durée max 2h/appel · 199 correspondants/mois · Hors numéros courts, spéciaux, 08 et Internet</div></div><div style="font-size:14px;font-weight:500;color:#E2001A;flex-shrink:0;margin-left:12px">17,00 € HT/mois</div></div>
+  <label class="chk"><input type="checkbox" id="fb4gliv" ${D.b4g_liv?'checked':''}><div>Livraison sur site</div></label>`;}
+  return '';
+}
+
+function rPort(){return `<div class="stag">Étape 6</div><div class="stitle">Portabilité des numéros</div><div class="ssub">Conservation du numéro lors du changement d'opérateur</div>
+<div class="card"><label class="chk" style="margin-bottom:10px"><input type="checkbox" id="fport" ${D.port?'checked':''}><div><div style="font-weight:500">Demande de portabilité</div><div class="cdesc">Le client mandate Outremer Telecom pour effectuer les démarches en son nom</div></div></label>
+${D.port?`<div class="legal-box" style="margin-bottom:12px">Le client déclare demander la portabilité de son numéro et mandate <b>OUTREMER TELECOM</b> pour effectuer en son nom et pour son compte les opérations nécessaires à sa mise en œuvre ainsi que la résiliation de son contrat auprès de son précédent opérateur.</div>
+<div class="g2">
+<div class="field"><label>Numéro à porter <span class="req">*</span></label><input type="tel" id="fportnum" maxlength="10" placeholder="0596 XX XX XX" value="${D.port_num}"><div class="hint">10 chiffres</div></div>
+<div class="field"><label>Code RIO <span class="req">*</span></label><input type="text" id="fportrio" maxlength="12" placeholder="Composez le 3179" value="${D.port_rio}"></div>
+<div class="field"><label>Opérateur actuel <span class="req">*</span></label><input type="text" id="fportop" placeholder="Orange, Free, SFR..." value="${D.port_op}"></div>
+<div class="field"><label>Date souhaitée de portabilité</label><input type="date" id="fportdate" value="${D.port_date}"><div class="hint">À renseigner uniquement dans l'hypothèse où le client souhaite la mise en œuvre de la portabilité dans un délai supérieur au délai légal (jours ouvrés, hors jours fériés). La portabilité est conditionnée à la disponibilité de l'accès.</div></div>
+</div>`:'<div style="font-size:11px;color:var(--color-text-tertiary);padding:2px 8px">Cochez si le client souhaite conserver son numéro existant.</div>'}
+</div>`;}
+
+function rAnn(){return `<div class="stag">Étape 7</div><div class="stitle">Annuaire universel</div><div class="ssub">Options de parution</div>
+<div class="alert ainfo">Par défaut : coordonnées <b>publiées</b> pour les offres fixes — <b>non publiées</b> pour les offres mobiles.</div>
+<div class="card"><div class="ctitle">Options de parution</div><div class="g2">
+<label class="chk"><input type="checkbox" id="fannrouge" ${D.ann_rouge?'checked':''}><div><div>Liste rouge</div><div class="cdesc">Non publié dans l'annuaire</div></div></label>
+<label class="chk"><input type="checkbox" id="fannprosp" ${D.ann_prosp?'checked':''}><div><div>Liste anti-prospection</div><div class="cdesc">Opposition au démarchage</div></div></label>
+<label class="chk"><input type="checkbox" id="fanninv" ${D.ann_inv?'checked':''}><div><div>Liste anti-annuaire inversé</div><div class="cdesc">Non retrouvable par recherche inversée</div></div></label>
+<label class="chk"><input type="checkbox" id="fanninc" ${D.ann_inc?'checked':''}><div><div>Liste adresse incomplète</div><div class="cdesc">Adresse non publiée en entier</div></div></label>
+<label class="chk"><input type="checkbox" id="fanninit" ${D.ann_init?'checked':''}><div><div>Liste initiale du prénom</div><div class="cdesc">Prénom en initiale uniquement</div></div></label>
+</div>
+<div class="field" style="margin-top:10px"><label>Inscription adresse e-mail dans l'annuaire</label><input type="email" id="fannemail" placeholder="email@societe.fr" value="${D.ann_email}"></div>
+<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)"><label class="chk"><input type="checkbox" id="fanninsc" ${D.ann_ins?'checked':''}><div><div>Inscription dans l'Annuaire Universel — Référencement de l'activité</div><div class="cdesc">Subordonné à la présentation des pièces justificatives de l'Annexe</div></div></label></div>
+</div>`;}
+
+function rPJ(){
+  const sts=['Commerçant','Artisan','Profession libérale','SARL / EURL','SAS / SA / SCI / SCP','Association déclarée','Syndicat professionnel','Fondation','Syndicat de copropriétaires','État / Collectivité locale','Société en formation','Établissement d\'enseignement libre'];
+  const pjmap={'Commerçant':['CNI recto/verso originale avec photographie en cours de validité','Extrait Kbis de moins de 3 mois'],'Artisan':['CNI recto/verso originale avec photographie en cours de validité','Copie de la carte professionnelle en cours de validité'],'Profession libérale':['CNI recto/verso originale avec photographie en cours de validité','Copie de la fiche SIRENE'],'SARL / EURL':['CNI recto/verso du représentant légal avec photographie','Extrait Kbis de moins de 3 mois (si +3 mois : joindre fiche SIRENE actualisée)','Mandat écrit (si signataire différent)','Copie des statuts','Copie du PV autorisant le signataire à conclure la convention'],'SAS / SA / SCI / SCP':['CNI recto/verso du représentant légal avec photographie','Extrait Kbis de moins de 3 mois (si +3 mois : joindre fiche SIRENE actualisée)','Mandat écrit (si signataire différent)','Copie des statuts','Copie du PV autorisant le signataire à conclure la convention'],'Association déclarée':['Attestation délivrée par la préfecture','Copie intégrale des statuts de l\'association','CNI recto/verso de la personne habilitée à contracter'],'Syndicat professionnel':['Attestation délivrée par la préfecture','Copie intégrale des statuts','CNI recto/verso de la personne habilitée à contracter'],'Fondation':['Copie du décret en Conseil d\'État publié au Journal Officiel','CNI recto/verso de la personne habilitée à contracter'],'Syndicat de copropriétaires':['Copie du PV de délibération d\'AG nommant le représentant du syndicat'],'État / Collectivité locale':['CNI recto/verso originale avec photographie en cours de validité','Attestation de l\'autorité responsable : délégation de signature'],'Société en formation':['CNI recto/verso originale avec photographie en cours de validité','Récépissé de dépôt délivré par le greffe'],'Établissement d\'enseignement libre':['Autorisation de fonctionnement délivrée par le Recteur ou l\'Inspection d\'académie','Attestation du Directeur diocésain si l\'autorisation ne désigne pas le chef d\'établissement','CNI recto/verso originale avec photographie en cours de validité']};
+  const s=D.pj_statut,req=s&&pjmap[s]?pjmap[s]:[];
+  return `<div class="stag">Étape 8</div><div class="stitle">Pièces justificatives</div><div class="ssub">Documents requis selon le statut juridique</div>
+<div class="alert awarn">Toutes les pièces d'identité doivent être des originaux avec photographie, en cours de validité (CNI ou Passeport). Le client certifie exacte et sincère l'intégralité des documents remis.</div>
+<div class="card"><div class="ctitle">Statut juridique <span class="req">*</span></div><div class="field"><select id="fpjstatut"><option value="">— Sélectionner —</option>${sts.map(x=>`<option value="${x}" ${D.pj_statut===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
+${s?`<div class="card"><div class="ctitle">Documents requis — ${s}</div><div style="display:flex;flex-direction:column;gap:8px">${req.map((p,i)=>`<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(226,0,26,.1);color:#E2001A;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">${i+1}</div><div style="font-size:12px;font-weight:500;flex:1">${p}</div><span class="badge breq">Obligatoire</span></div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Cliquer pour joindre le document</div><div style="font-size:10px;color:var(--color-text-tertiary);margin-top:3px">PDF, JPG ou PNG — 5 Mo max</div></div></div>`).join('')}</div></div>
+<div class="card"><div class="ctitle">Documents communs</div><div style="display:flex;flex-direction:column;gap:8px">
+<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:8px">RIB au nom du titulaire du contrat <span class="req">*</span></div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Joindre le RIB</div></div></div>
+${D.sig_diff?`<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:8px">Pouvoir du représentant légal en faveur du signataire <span class="req">*</span></div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Joindre le pouvoir</div></div></div>`:''}
+<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:3px">Justificatif de domicile / siège de moins de 3 mois</div><div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:8px">Si l'adresse du Kbis / SIREN diffère de l'adresse du contrat</div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Facture EDF, eau ou télécom — si applicable</div></div></div>
+</div></div>`:'<div class="card"><div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:16px">Sélectionnez le statut juridique pour afficher les documents requis.</div></div>'}`;
+}
+
+function rSEPA(){return `<div class="stag">Étape 9</div><div class="stitle">Mandat de prélèvement SEPA</div><div class="ssub">Obligatoire pour toutes les offres — Paiement récurrent</div>
+<div class="card" style="border-color:var(--color-border-info)">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px"><div><div style="font-size:11px;font-weight:500;margin-bottom:4px">Identifiant Créancier SEPA (ICS)</div><div class="sepa-id">FR92ZZZ406142</div></div><div style="text-align:right;font-size:11px"><div style="color:var(--color-text-secondary)">Nom et adresse du créancier</div><div style="font-weight:500;margin-top:2px">Outremer Telecom SAS</div><div style="color:var(--color-text-secondary)">Z.I. Jambette — CS 90013<br>97285 Lamentin Cedex</div></div></div>
+<div class="legal-box">En signant ce formulaire de mandat, vous autorisez la société <b>OUTREMER TELECOM</b> à envoyer des instructions à votre prestataire de services de paiement pour débiter votre compte, et votre prestataire de services de paiement à débiter votre compte conformément aux instructions de la société OUTREMER TELECOM. Vous bénéficiez du droit d'être remboursé par votre prestataire de services de paiement selon les conditions décrites dans la convention que vous avez passée avec lui. Une demande de remboursement doit être présentée dans les <b>8 semaines</b> suivant la date de débit pour un prélèvement autorisé, et sans tarder, au plus tard dans les <b>13 mois</b> en cas de prélèvement non autorisé. <b>Type de paiement : Paiement récurrent / répétitif.</b> En signant, vous reconnaissez et acceptez que la société OUTREMER TELECOM vous avise <b>cinq (5) jours</b> avant la date d'échéance pour le premier prélèvement, puis <b>trois (3) jours</b> pour les prélèvements successifs.</div>
+</div>
+<div class="card"><div class="ctitle">Coordonnées de l'entreprise (en lettres capitales)</div><div class="g2">
+<div class="field full"><label>Nom de la société <span class="req">*</span></label><input type="text" id="fsepasoc" value="${D.rs}" style="text-transform:uppercase"></div>
+<div class="field"><label>RCS <span class="req">*</span></label><input type="text" id="fseparcs" placeholder="Ex : RCS Fort-de-France" value="${D.rcs}"></div>
+<div class="field full"><label>Adresse siège social <span class="req">*</span></label><input type="text" id="fsepadr" value="${D.rue}"></div>
+<div class="field"><label>Code postal <span class="req">*</span></label><input type="text" id="fsepacp" maxlength="5" value="${D.cp}"></div>
+<div class="field"><label>Ville <span class="req">*</span></label><input type="text" id="fsepavil" value="${D.ville}"></div>
+<div class="field full"><label>Nom et prénom du représentant légal <span class="req">*</span></label><input type="text" id="fseparl" value="${(D.rl_prenom+' '+D.rl_nom).trim()}" style="text-transform:uppercase"></div>
+</div></div>
+<div class="card"><div class="ctitle">Coordonnées bancaires <span class="req">*</span></div>
+<div class="field" style="margin-bottom:10px"><label>IBAN <span class="req">*</span></label><input type="text" id="fiban" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" maxlength="34" value="${D.iban}" style="font-family:var(--font-mono);letter-spacing:1px"><div class="hint">Format France : FR + 25 chiffres</div></div>
+<div class="field"><label>BIC <span class="req">*</span></label><input type="text" id="fbic" placeholder="Ex : BNPAFRPP" maxlength="11" value="${D.bic}" style="font-family:var(--font-mono);text-transform:uppercase"><div class="hint">8 ou 11 caractères alphanumériques</div></div>
+</div>`;}
+
+function rRecap(){
+  const on={mobile:'Forfait PRO 4G/5G',carre:'Carré PRO Internet',box:'BOX 4G/5G PRO',fibre:'Fibre PRO',box4g:'Box Téléphonique 4G'};
+  return `<div class="stag">Étape 10</div><div class="stitle">Récapitulatif et consentements</div><div class="ssub">Vérifiez toutes les informations avant de signer</div>
+<div class="recap-sec"><div class="rtitle">Dossier</div><div class="rrow"><span class="rl">Référence</span><span class="rv" style="font-family:var(--font-mono)">${ref}</span></div><div class="rrow"><span class="rl">Territoire</span><span class="rv">${D.territoire||'—'}</span></div><div class="rrow"><span class="rl">Type</span><span class="rv">${D.dossier||'—'}</span></div>${D.avenant?`<div class="rrow"><span class="rl">N° contrat existant</span><span class="rv">${D.avenant}</span></div>`:''}</div>
+<div class="recap-sec"><div class="rtitle">Titulaire</div><div class="rrow"><span class="rl">Raison sociale</span><span class="rv">${D.rs||'—'}</span></div><div class="rrow"><span class="rl">SIRET</span><span class="rv" style="font-family:var(--font-mono)">${D.siret||'—'}</span></div><div class="rrow"><span class="rl">APE</span><span class="rv">${D.ape||'—'}</span></div><div class="rrow"><span class="rl">Adresse</span><span class="rv">${[D.rue,D.cp,D.ville].filter(Boolean).join(', ')||'—'}</span></div><div class="rrow"><span class="rl">Téléphone</span><span class="rv">${D.tel||'—'}</span></div><div class="rrow"><span class="rl">E-mail</span><span class="rv">${D.email||'—'}</span></div></div>
+<div class="recap-sec"><div class="rtitle">Représentant légal</div><div class="rrow"><span class="rl">Identité</span><span class="rv">${[D.rl_civ,D.rl_prenom,D.rl_nom].filter(Boolean).join(' ')||'—'}</span></div><div class="rrow"><span class="rl">Fonction</span><span class="rv">${D.rl_fn||'—'}</span></div><div class="rrow"><span class="rl">Mobile</span><span class="rv">${D.rl_mob||'—'}</span></div><div class="rrow"><span class="rl">E-mail</span><span class="rv">${D.rl_email||'—'}</span></div>${D.sig_diff?`<div class="rrow"><span class="rl">Signataire</span><span class="rv">${[D.sig_civ,D.sig_prenom,D.sig_nom].filter(Boolean).join(' ')||'—'}</span></div>`:''}</div>
+<div class="recap-sec"><div class="rtitle">Offres souscrites</div>${D.offres.length?D.offres.map(o=>{let d='';if(o==='mobile')D.mob_lines.forEach((ln,i)=>{if(ln.f)d+=`<div class="rrow"><span class="rl">Ligne ${i+1}</span><span class="rv">${ln.f.toUpperCase()} · ${ln.formule||'—'}${ln.terminal?' · '+ln.terminal:''}</span></div>`;});if(o==='box'&&D.box_offre)d+=`<div class="rrow"><span class="rl">BOX</span><span class="rv">${D.box_offre==='300'?'4G PRO 300 Go — 44,99 €/mois':'4G/5G PRO 500 Go — 74,99 €/mois'}</span></div>`;if(o==='fibre'&&D.fibre_offre)d+=`<div class="rrow"><span class="rl">Fibre</span><span class="rv">${D.fibre_offre}</span></div>`;if(o==='box4g')d+=`<div class="rrow"><span class="rl">Box 4G</span><span class="rv">17,00 € HT/mois</span></div>`;return `<div style="padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 0">${on[o]||o}</div>${d}</div>`;}).join(''):`<div style="font-size:11px;color:#EF4444">Aucune offre sélectionnée</div>`}</div>
+<div class="recap-sec"><div class="rtitle">SEPA</div><div class="rrow"><span class="rl">IBAN</span><span class="rv" style="font-family:var(--font-mono);font-size:10px">${D.iban?D.iban.replace(/\s/g,'').replace(/(.{4})/g,'$1 ').trim():'—'}</span></div><div class="rrow"><span class="rl">BIC</span><span class="rv" style="font-family:var(--font-mono)">${D.bic||'—'}</span></div></div>
+<div class="card"><div class="ctitle">Mentions légales RGPD</div><div class="legal-box">Conformément aux lois et réglementations françaises et européennes en vigueur, nous vous informons qu'<b>OUTREMER TELECOM</b> collecte et traite vos données personnelles. Ces données sont nécessaires à l'exécution de votre contrat et elles sont traitées et transmises aux sociétés de notre Groupe, ainsi qu'à nos prestataires, pour la gestion de votre compte et votre information sur vos services. Elles peuvent faire l'objet d'un transfert hors UE et sont conservées pour la durée de la fourniture des Services et/ou de la finalité des traitements spécifiques. Pour exercer vos droits, envoyez un courrier à : <b>Outremer Telecom, Service Clients — Données Personnelles, ZI La Jambette, CS 90013, 97282 Le Lamentin Cedex</b>, ou par courriel à <b>donneespersonnelles@sfrcaraibe.com</b>, ou via votre espace client. Retrouvez toutes les informations sur <b>www.sfrcaraibe.fr</b>.</div></div>
+<div class="card"><div class="ctitle">Consentements</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="border:0.5px solid #E2001A;border-radius:var(--border-radius-md);padding:12px"><label class="chk" style="align-items:flex-start"><input type="checkbox" id="fcgv" ${D.consent_cgv?'checked':''}><div><div style="font-weight:500">Je déclare avoir pris connaissance et accepter les termes des conditions générales de souscription, des descriptifs d'offres et de tarifs et des conditions particulières <span class="req">*</span></div><div class="cdesc">Remis en boutique ou par l'agent ou disponibles sur le site www.sfrcaraibe.fr</div></div></label></div>
+<div style="border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px"><label class="chk" style="align-items:flex-start"><input type="checkbox" id="fmkt" ${D.consent_mkt?'checked':''}><div><div>J'accepte que les données collectées me concernant soient traitées dans le cadre d'opérations de marketing direct</div><div class="cdesc">Optionnel — Opposition possible à tout moment</div></div></label></div>
+</div></div>
+<div class="card"><div class="ctitle">Signature du client</div><div class="g2">
+<div class="field"><label>Fait à <span class="req">*</span></label><input type="text" id="ffaita" placeholder="${D.ville||'Ville'}" value="${D.fait_a}"></div>
+<div class="field"><label>Le</label><input type="text" value="${new Date().toLocaleDateString('fr-FR')}" readonly style="background:var(--color-background-secondary);color:var(--color-text-tertiary)"><div class="hint">Horodaté automatiquement</div></div>
+<div class="field full"><label>Qualité du signataire <span class="req">*</span></label><input type="text" id="fqualite" placeholder="Ex : Gérant, Directeur Général, Président..." value="${D.qualite}"><div class="hint">Mention précédée de « lu et approuvé » — requise pour la validité juridique</div></div>
+</div></div>
+<div class="card"><div class="ctitle">Workflow de validation — 2 signatures requises</div>
+<div class="wfstep"><div class="wfnum cur">1</div><div><div class="wftitle">Signature du client</div><div class="wfdesc">Le client consulte le récapitulatif, accepte les CGS, saisit sa qualité et signe. Un lien sécurisé peut être envoyé par e-mail si absent en boutique.</div></div></div>
+<div class="wfstep"><div class="wfnum wait">2</div><div><div class="wftitle">Notification au conseiller</div><div class="wfdesc">Dès la signature client validée, le conseiller reçoit une notification e-mail.</div></div></div>
+<div class="wfstep"><div class="wfnum wait">3</div><div><div class="wftitle">Validation et signature du conseiller</div><div class="wfdesc">Le conseiller accède à la section réservée (Étape 11), renseigne son code et signe. Engage sa responsabilité professionnelle.</div></div></div>
+<div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Transmission au back-office</div><div class="wfdesc">Dossier complet transmis automatiquement. Client et conseiller reçoivent un exemplaire PDF par e-mail.</div></div></div>
+</div>
+<div style="display:flex;justify-content:center;margin-top:14px"><button class="btn bsub" onclick="alert('Signature client enregistrée.\\nNotification envoyée au conseiller — Étape 11.')">Confirmer « lu et approuvé » et signer →</button></div>`;}
+
+function rCons(){return `<div class="stag">Étape 11 — Zone réservée</div><div class="stitle">Section conseiller</div><div class="ssub">Accès exclusif au conseiller SFR Business — verrouillé côté client</div>
+<div class="consbanner"><div class="consicon">C</div><div style="flex:1"><div style="font-size:12px;font-weight:500">Zone sécurisée conseiller</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Non modifiable par le client</div></div><div style="font-size:10px;background:rgba(255,255,255,.1);padding:3px 9px;border-radius:20px;color:rgba(255,255,255,.7)">Verrouillé client</div></div>
+<div class="card"><div class="ctitle">Identification du conseiller</div><div class="g2">
+<div class="field"><label>Code conseiller <span class="req">*</span></label><input type="text" id="fconscode" maxlength="8" value="${D.cons_code}"><div class="hint">Code interne SFR Business</div></div>
+<div class="field"><label>Segment</label><div class="rgroup" style="margin-top:4px"><label class="rbtn sel"><input type="radio" checked>D</label></div></div>
+<div class="field full"><label>Nom du conseiller <span class="req">*</span></label><input type="text" id="fconsnom" value="${D.cons_nom}"></div>
+</div></div>
+<div class="card"><div class="ctitle">Récapitulatif dossier</div><div style="font-size:12px">
+<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Référence</span><span style="font-family:var(--font-mono);font-weight:500">${ref}</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Titulaire</span><span style="font-weight:500">${D.rs||'—'}</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Territoire</span><span style="font-weight:500">${D.territoire||'—'}</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--color-text-secondary)">Offres</span><span style="font-weight:500;text-align:right">${D.offres.length?D.offres.join(' · '):'—'}</span></div>
+</div></div>
+<div class="card"><div class="ctitle">Commentaires internes</div><textarea style="width:100%;height:80px;resize:vertical;font-family:var(--font-sans)" placeholder="Notes internes, conditions particulières..."></textarea></div>
+<div class="card" style="border-color:var(--color-border-warning)"><div class="ctitle">Cachet et signature conseiller</div>
+<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:18px;text-align:center;margin-bottom:12px;border:1px dashed var(--color-border-secondary)">
+<div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px">Zone signature et cachet numérique</div>
+<div style="font-size:12px;color:var(--color-text-secondary)">Précédé de la mention « lu et approuvé » — Qualité du signataire</div></div>
+<label class="chk"><input type="checkbox" id="fconsvalid" ${D.cons_valid?'checked':''}><div><div style="font-weight:500">Je valide ce dossier et certifie l'exactitude des informations <span class="req">*</span></div><div class="cdesc">Cette validation engage ma responsabilité en tant que conseiller SFR Business.</div></div></label>
+<div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn bsub" onclick="doSubmit()">Valider et transmettre au back-office →</button></div>
+</div>`;}
+
+function bindAll(){
+  const B2=(id,key,t)=>{const el=document.getElementById(id);if(!el)return;el.value=D[key]||'';const s=()=>{D[key]=t?t(el.value):el.value;};el.addEventListener('input',s);el.addEventListener('change',s);};
+  const BC2=(id,key,cb)=>{const el=document.getElementById(id);if(!el)return;el.checked=!!D[key];el.addEventListener('change',()=>{D[key]=el.checked;if(cb)cb();});};
+  B2('fav','avenant');B2('frs','rs',v=>v.toUpperCase());B2('fsiret','siret');B2('fape','ape',v=>v.toUpperCase());
+  B2('frue','rue');B2('fbat','bat');B2('fville','ville');B2('ftel','tel',v=>num(v,10));B2('femail','email');
+  const cpEl=document.getElementById('fcp');
+  if(cpEl){cpEl.value=D.cp||'';cpEl.addEventListener('input',e=>{const v=num(e.target.value,5);D.cp=v;e.target.value=v;const vl=cpVille(v);if(vl&&!D.ville){D.ville=vl;const ve=document.getElementById('fville');if(ve)ve.value=vl;}});}
+  B2('frlnom','rl_nom',v=>v.toUpperCase());B2('frlprenom','rl_prenom');B2('frlfn','rl_fn');
+  B2('frlfix','rl_fix',v=>num(v,10));B2('frlmob','rl_mob',v=>num(v,10));B2('frlemail','rl_email');
+  BC2('fsigdiff','sig_diff',()=>renderMain());
+  B2('fsignom','sig_nom',v=>v.toUpperCase());B2('fsigprenom','sig_prenom');B2('fsigfn','sig_fn');
+  B2('fsigfix','sig_fix',v=>num(v,10));B2('fsigmob','sig_mob',v=>num(v,10));B2('fsigemail','sig_email');
+  ['gf','ic'].forEach(p=>{['nom','prenom','fn','mob','fix','email'].forEach(f=>{const isN=f==='mob'||f==='fix';B2(`f${p}${f}`,`${p}_${f}`,isN?v=>num(v,10):f==='nom'?v=>v.toUpperCase():null);});});
+  B2('ffactsoc','fact_soc');B2('ffactsvc','fact_svc');B2('ffactrue','fact_rue');B2('ffactlieu','fact_lieu');
+  B2('ffactcompl','fact_compl');B2('ffactbat','fact_bat');B2('ffactcp','fact_cp');B2('ffactville','fact_ville');
+  B2('fboxelig','box_elig');BC2('fboxtv','box_tv');BC2('fboxteam','box_team');BC2('fboxliv','box_liv');
+  B2('ffibelig','fibre_elig');B2('ffibnom','fibre_nom');B2('ffibprenom','fibre_prenom');
+  B2('ffibcontact','fibre_contact',v=>num(v,10));B2('ffibvendeur','fibre_vendeur');
+  B2('ffibrue','fibre_rue');B2('ffibbat','fibre_bat');B2('ffibesc','fibre_esc');
+  B2('ffibcommune','fibre_commune');B2('ffibcp','fibre_cp');B2('ffibemail','fibre_email');
+  B2('ffibsec','fibre_secours',v=>num(v,10));
+  B2('ffibeavc','fibre_av_c');B2('ffibeavl','fibre_av_l');B2('ffibeavcm','fibre_av_cm');
+  BC2('ffibmtv','fibre_multitv');BC2('ffibbrep','fibre_rep',()=>renderMain());B2('ffibrepemail','fibre_rep_email');
+  B2('fb4gelig','b4g_elig');B2('fb4gnc','b4g_nc');BC2('fb4gliv','b4g_liv');
+  BC2('fport','port',()=>renderMain());
+  B2('fportnum','port_num',v=>num(v,10));B2('fportrio','port_rio');B2('fportop','port_op');B2('fportdate','port_date');
+  BC2('fannrouge','ann_rouge');BC2('fannprosp','ann_prosp');BC2('fanninv','ann_inv');BC2('fanninc','ann_inc');BC2('fanninit','ann_init');B2('fannemail','ann_email');BC2('fanninsc','ann_ins');
+  const pjs=document.getElementById('fpjstatut');if(pjs)pjs.addEventListener('change',()=>{D.pj_statut=pjs.value;renderMain();});
+  B2('fseparcs','rcs');
+  const ibanEl=document.getElementById('fiban');if(ibanEl){ibanEl.value=D.iban;ibanEl.addEventListener('input',e=>{D.iban=e.target.value.replace(/\s/g,'').toUpperCase();});}
+  B2('fbic','bic',v=>v.toUpperCase());
+  BC2('fcgv','consent_cgv');BC2('fmkt','consent_mkt');
+  B2('ffaita','fait_a');B2('fqualite','qualite');
+  B2('fconscode','cons_code');B2('fconsnom','cons_nom');BC2('fconsvalid','cons_valid');
+  document.querySelectorAll('input[name="rlciv"]').forEach(r=>{r.addEventListener('change',()=>{D.rl_civ=r.value;document.querySelectorAll('[name="rlciv"]').forEach(x=>x.closest('.rbtn').classList.toggle('sel',x.value===r.value));});});
+  document.querySelectorAll('input[name="sigciv"]').forEach(r=>{r.addEventListener('change',()=>{D.sig_civ=r.value;document.querySelectorAll('[name="sigciv"]').forEach(x=>x.closest('.rbtn').classList.toggle('sel',x.value===r.value));});});
+  document.querySelectorAll('input[name="fibciv"]').forEach(r=>{r.addEventListener('change',()=>{D.fibre_civ=r.value;document.querySelectorAll('[name="fibciv"]').forEach(x=>x.closest('.rbtn').classList.toggle('sel',x.value===r.value));});});
+  lv('fsiret',vSIRET,'SIRET invalide — 14 chiffres requis');
+  lv('fape',vAPE,'Format invalide — ex : 6110Z');
+  lv('femail',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),'Format e-mail invalide');
+  lv('frlemail',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),'Format e-mail invalide');
+  lv('fiban',vIBAN,'IBAN invalide');lv('fbic',vBIC,'BIC invalide — 8 ou 11 caractères');
+  D.mob_lines.forEach((ln,i)=>{
+    const t=document.getElementById(`fmobt${i}`);if(t)t.addEventListener('input',()=>{ln.terminal=t.value;});
+    const p=document.getElementById(`fmobp${i}`);if(p)p.addEventListener('input',()=>{ln.prix=p.value;});
+    const l=document.getElementById(`fmobliv${i}`);if(l)l.addEventListener('change',()=>{ln.liv=l.checked;});
+  });
+}
+
+function toggleO(id){const i=D.offres.indexOf(id);if(i>-1)D.offres.splice(i,1);else D.offres.push(id);renderMain();}
+function toggleLine(i){D.mob_lines[i]._open=!D.mob_lines[i]._open;renderMain();}
+function addLine(){if(D.mob_lines.length<5){D.mob_lines.push({f:'',formule:'',terminal:'',prix:'',liv:false,avt:'',avl:'',_open:true});renderMain();}}
+function rmLine(e,i){e.stopPropagation();D.mob_lines.splice(i,1);renderMain();}
+function setLF(i,k){D.mob_lines[i].f=k;renderMain();}
+function setLFm(i,k){D.mob_lines[i].formule=k;renderMain();}
+function setLAT(i,k){D.mob_lines[i].avt=k;renderMain();}
+function addCL(){if(D.carre_lines.length<5){D.carre_lines.push({g10:false,g50:false,mod:'',prix:''});renderMain();}}
+function setCA(i,v){D.carre_lines[i].g10=v==='10';D.carre_lines[i].g50=v==='50';}
+function doSubmit(){if(!D.cons_valid){alert('Veuillez cocher la case de validation pour confirmer votre responsabilité.');return;}alert(`Dossier ${ref} transmis au back-office SFR Business.\n\nClient et conseiller recevront un exemplaire PDF par e-mail.`);}
+
+const sbEl=document.getElementById('sb');
+const metaEl=document.createElement('div');metaEl.className='sb-meta';metaEl.innerHTML=`Réf. <b>${ref}</b><br>—<br>—`;sbEl.appendChild(metaEl);
+renderSteps();renderMain();
+</script>
+</body>
+</html>
