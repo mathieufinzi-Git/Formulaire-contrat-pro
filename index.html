@@ -256,7 +256,27 @@ function renderMain(){
 }
 
 function jump(i){cur=i;renderSteps();renderMain();}
-function nav(d){if(d===1)done.add(cur);cur=Math.max(0,Math.min(STEPS.length-1,cur+d));renderSteps();renderMain();document.getElementById('main').scrollTop=0;}
+function validateStep(){
+  if(STEPS[cur].id==='territoire'){
+    if(!D.territoire){showErr('Veuillez sélectionner un territoire.');return false;}
+    if(!D.dossier){showErr('Veuillez choisir la nature du dossier (Nouveau contrat ou Avenant).');return false;}
+    if(D.dossier==='Avenant'&&!D.avenant.trim()){showErr('Veuillez saisir le numéro de contrat existant.');return false;}
+  }
+  return true;
+}
+function showErr(msg){
+  let el=document.getElementById('step-err');
+  if(!el){el=document.createElement('div');el.id='step-err';el.style.cssText='background:#FEF2F2;border:0.5px solid #FECACA;border-radius:8px;padding:9px 12px;font-size:11px;color:#B91C1C;margin:10px 20px 0;';document.querySelector('.ftr').before(el);}
+  el.textContent=msg;
+  setTimeout(()=>{if(el)el.remove();},3500);
+}
+function nav(d){
+  if(d===1&&!validateStep())return;
+  if(d===1)done.add(cur);
+  cur=Math.max(0,Math.min(STEPS.length-1,cur+d));
+  const err=document.getElementById('step-err');if(err)err.remove();
+  renderSteps();renderMain();document.getElementById('main').scrollTop=0;
+}
 
 /* ── ÉTAPE 1 : Territoire ── */
 function rT(){
@@ -406,7 +426,7 @@ function rOBody(id,av){
             <div class="field"><label>Modèle</label><input type="text" id="fmobt${i}" value="${ln.terminal||''}" placeholder="Ex : Samsung Galaxy S25" oninput="D.mob_lines[${i}].terminal=this.value"></div>
             <div class="field"><label>Prix HT</label><input type="text" id="fmobp${i}" value="${ln.prix||''}" placeholder="€ HT" oninput="D.mob_lines[${i}].prix=this.value"></div>
           </div>
-          <label class="chk" style="margin-bottom:6px"><input type="checkbox" ${ln.liv?'checked':''} onchange="D.mob_lines[${i}].liv=this.checked"><div>Livraison sur site</div></label>`
+          <label class="chk" style="margin-bottom:6px"><input type="checkbox" ${ln.liv?'checked':''} onchange="D.mob_lines[${i}].liv=this.checked"><div>Livraison sur site du terminal</div></label>`
           :`<div class="alert ainfo" style="font-size:11px;margin-bottom:8px">Le choix d'un terminal et la livraison sur site sont conditionnés aux formules Silver ou Gold.</div>`}
           <label class="chk" style="margin-top:4px"><input type="checkbox"><div><div>SFR PRO Team</div><div class="cdesc">Remise sur lignes mobiles — BOX Pro + 1 à 5 lignes compatibles sur même RIB requis</div></div></label>
         </div>`:''}
@@ -453,13 +473,19 @@ function rOBody(id,av){
         <div class="fogrid">
           <div class="fopt ${D.box_avt==='new'?'sel':''}" onclick="D.box_avt='new';renderMain()"><div class="foname">Ajout de nouvel accès</div></div>
           <div class="fopt ${D.box_avt==='modif'?'sel':''}" onclick="D.box_avt='modif';renderMain()"><div class="foname">Modification d'offre existante</div></div>
-          <div class="fopt ${D.box_avt==='migr'?'sel':''}" onclick="D.box_avt='migr';renderMain()"><div class="foname">Migration ADSL vers BOX 4G/5G</div></div>
         </div>
         ${D.box_avt==='modif'?`<div class="g2" style="margin-top:8px">
           <div class="field"><label>N° de contrat <span class="req">*</span></label><input type="text" id="fboxavc" value="${D.box_av_c}" oninput="D.box_av_c=this.value"></div>
           <div class="field"><label>N° de ligne <span class="req">*</span></label><input type="tel" id="fboxavl" maxlength="10" value="${D.box_av_l}" oninput="D.box_av_l=this.value"></div>
           <div class="field full"><label>Commentaires</label><textarea style="height:46px" oninput="D.box_av_cm=this.value">${D.box_av_cm}</textarea></div>
-        </div>`:''}</div></div>`:''}
+        </div>`:''}</div></div>`
+    :`<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)">
+      <div class="avenant-block"><div class="avenant-title">Type de souscription</div>
+        <div class="fogrid">
+          <div class="fopt ${D.box_avt==='new'?'sel':''}" onclick="D.box_avt='new';renderMain()"><div class="foname">Nouvel accès BOX</div></div>
+          <div class="fopt ${D.box_avt==='migr'?'sel':''}" onclick="D.box_avt='migr';renderMain()"><div class="foname">Migration ADSL vers BOX 4G/5G</div></div>
+        </div>
+      </div></div>`}
     <div style="margin-top:8px;font-size:10px;color:var(--color-text-tertiary)">Location BOX incluse dans le prix du forfait. Engagement 12 mois.</div>`;
   }
 
@@ -571,7 +597,7 @@ function rPort(){
     <label class="chk" style="margin-bottom:10px"><input type="checkbox" id="fport" ${D.port?'checked':''}><div><div style="font-weight:500">Demande de portabilité</div><div class="cdesc">Le client mandate Outremer Telecom pour effectuer les démarches en son nom</div></div></label>
     ${D.port?`<div class="legal-box" style="margin-bottom:12px">Le client déclare demander la portabilité de son numéro et mandate <b>OUTREMER TELECOM</b> pour effectuer en son nom et pour son compte les opérations nécessaires à sa mise en œuvre ainsi que la résiliation de son contrat auprès de son précédent opérateur.</div>
     <div class="g2">
-      <div class="field"><label>Numéro à porter <span class="req">*</span></label><input type="tel" id="fportnum" maxlength="10" placeholder="0596 XX XX XX" value="${D.port_num}"><div class="hint">10 chiffres</div></div>
+      <div class="field"><label>Numéro à porter <span class="req">*</span></label><input type="tel" id="fportnum" maxlength="10" placeholder="0596 XX XX XX" value="${D.port_num}" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10);D.port_num=this.value"><div class="hint">10 chiffres uniquement</div></div>
       <div class="field"><label>Code RIO <span class="req">*</span></label><input type="text" id="fportrio" maxlength="12" placeholder="Composez le 3179" value="${D.port_rio}"></div>
       <div class="field"><label>Opérateur actuel <span class="req">*</span></label><input type="text" id="fportop" placeholder="Orange, Free, SFR..." value="${D.port_op}"></div>
       <div class="field"><label>Date souhaitée de portabilité</label><input type="date" id="fportdate" value="${D.port_date}"><div class="hint">À renseigner uniquement dans l'hypothèse où le client souhaite la mise en œuvre de la portabilité dans un délai supérieur au délai légal (jours ouvrés, hors jours fériés). La portabilité est conditionnée à la disponibilité de l'accès.</div></div>
@@ -764,8 +790,7 @@ function rCons(){
   <div class="card"><div class="ctitle">Commentaires internes</div><textarea style="width:100%;height:80px;resize:vertical;font-family:var(--font-sans)" placeholder="Notes internes, conditions particulières..."></textarea></div>
   <div class="card" style="border-color:var(--color-border-warning)"><div class="ctitle">Cachet et signature conseiller</div>
     <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:18px;text-align:center;margin-bottom:12px;border:1px dashed var(--color-border-secondary)">
-      <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px">Zone signature et cachet numérique</div>
-      <div style="font-size:12px;color:var(--color-text-secondary)">Précédé de la mention « lu et approuvé » — Qualité du signataire</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary)">Zone de signature numérique du conseiller</div>
     </div>
     <label class="chk"><input type="checkbox" id="fconsvalid" ${D.cons_valid?'checked':''}><div>
       <div style="font-weight:500">Je valide ce dossier et certifie l'exactitude des informations <span class="req">*</span></div>
@@ -852,8 +877,20 @@ function setLAT(i,k){D.mob_lines[i].avt=k;renderMain();}
 function addCL(){if(D.carre_lines.length<5){D.carre_lines.push({g10:false,g50:false,mod:'',prix:''});renderMain();}}
 function setCA(i,v){D.carre_lines[i].g10=v==='10';D.carre_lines[i].g50=v==='50';}
 function doSubmit(){
-  if(!D.cons_valid){alert('Veuillez cocher la case de validation pour confirmer votre responsabilité.');return;}
-  alert(`Dossier ${ref} transmis au back-office.\n\nDestination : ${D.bo_email}\nClient : ${D.sig_diff&&D.sig_email?D.sig_email:D.rl_email||'—'}\nConseiller : ${D.cons_email||'—'}\n\nLes trois parties recevront un exemplaire PDF par e-mail.`);
+  if(!D.cons_valid){showErr('Veuillez cocher la case de validation pour confirmer votre responsabilité.');return;}
+  const today=new Date().toLocaleDateString('fr-FR');
+  const client=D.rs||'Client non renseigné';
+  const consEmail=D.cons_email||'(e-mail conseiller non renseigné)';
+  const boEmail=D.bo_email||'backoffice@outremer-telecom.fr';
+  alert(
+    `✅ Dossier transmis au back-office\n\n` +
+    `Référence : ${ref}\n` +
+    `Client : ${client}\n` +
+    `Territoire : ${D.territoire||'—'}\n\n` +
+    `📧 Notification envoyée à : ${consEmail}\n` +
+    `Objet : « Le contrat souscrit le ${today} pour le client ${client} a été transmis ce jour aux équipes back-office sous la référence ${ref}. »\n\n` +
+    `📤 Dossier transmis à : ${boEmail}`
+  );
 }
 
 const sbEl=document.getElementById('sb');
