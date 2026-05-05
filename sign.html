@@ -57,9 +57,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 </div>
 
 <script>
-// ⚠️ REMPLACER CES VALEURS après avoir créé ton projet Supabase
-const SUPABASE_URL = 'https://ghxbrzonqxkeuusjrjcb.supabase.co/rest/v1/';
+// ═══════════════════════════════════════════════════════════
+// CONFIGURATION SUPABASE — REMPLACER CES 2 VALEURS
+// ═══════════════════════════════════════════════════════════
+const SUPABASE_URL     = 'https://ghxbrzonqxkeuusjrjcb.supabase.co';
+// Ex: 'https://abcdefghijklm.supabase.co'
+
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGJyem9ucXhrZXV1c2pyamNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzU2NjgsImV4cCI6MjA5MzQxMTY2OH0.DHoB0wNHe95ADUBZN83S78RfS7hV72jzthCa9E7Rt_Y';
+// Ex: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+// ═══════════════════════════════════════════════════════════
+
 const VALIDATE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/sign-client';
 
 const params = new URLSearchParams(window.location.search);
