@@ -168,6 +168,16 @@ body{font-family:var(--font-sans);font-size:13px;color:var(--color-text-primary)
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════
+// CONFIGURATION SUPABASE — REMPLACER CES 2 VALEURS
+// ═══════════════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://ghxbrzonqxkeuusjrjcb.supabase.co/rest/v1/';
+// Ex: 'https://abcdefghijklm.supabase.co'
+
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGJyem9ucXhrZXV1c2pyamNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzU2NjgsImV4cCI6MjA5MzQxMTY2OH0.DHoB0wNHe95ADUBZN83S78RfS7hV72jzthCa9E7Rt_Y';
+// Ex: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+// ═══════════════════════════════════════════════════════════
+
 const STEPS=[
   {id:'territoire',s:'Territoire'},{id:'titulaire',s:'Titulaire'},{id:'intervenants',s:'Intervenants'},
   {id:'facturation',s:'Facturation'},{id:'offres',s:'Offres'},{id:'portabilite',s:'Portabilité'},
@@ -764,7 +774,7 @@ function rRecap(){
     <div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Transmission au back-office</div><div class="wfdesc">Le dossier complet — données + pièces justificatives + 2 signatures — est transmis automatiquement au back-office. Client et conseiller reçoivent chacun un exemplaire PDF par e-mail.</div></div></div>
   </div>
   <div style="display:flex;justify-content:center;margin-top:14px">
-    <button class="btn bsub" onclick="alert('Lien de signature envoyé à ${sigEmail}\\nLe client recevra le formulaire à signer par e-mail.')">Envoyer le lien de signature au client →</button>
+    <button class="btn bsub" id="btn-envoyer-lien" onclick="envoyerLienSignature()">Envoyer le lien de signature au client →</button>
   </div>`;
 }
 
@@ -878,19 +888,71 @@ function addCL(){if(D.carre_lines.length<5){D.carre_lines.push({g10:false,g50:fa
 function setCA(i,v){D.carre_lines[i].g10=v==='10';D.carre_lines[i].g50=v==='50';}
 function doSubmit(){
   if(!D.cons_valid){showErr('Veuillez cocher la case de validation pour confirmer votre responsabilité.');return;}
+  const btn=document.querySelector('.bsub');
+  if(btn){btn.disabled=true;btn.textContent='Transmission en cours...';}
   const today=new Date().toLocaleDateString('fr-FR');
   const client=D.rs||'Client non renseigné';
-  const consEmail=D.cons_email||'(e-mail conseiller non renseigné)';
-  const boEmail=D.bo_email||'backoffice@outremer-telecom.fr';
-  alert(
-    `✅ Dossier transmis au back-office\n\n` +
-    `Référence : ${ref}\n` +
-    `Client : ${client}\n` +
-    `Territoire : ${D.territoire||'—'}\n\n` +
-    `📧 Notification envoyée à : ${consEmail}\n` +
-    `Objet : « Le contrat souscrit le ${today} pour le client ${client} a été transmis ce jour aux équipes back-office sous la référence ${ref}. »\n\n` +
-    `📤 Dossier transmis à : ${boEmail}`
-  );
+
+  fetch(`${SUPABASE_URL}/functions/v1/validate-conseiller`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON},
+    body:JSON.stringify({
+      reference:ref,
+      cons_email:D.cons_email,
+      cons_nom:D.cons_nom,
+      bo_email:D.bo_email||'backoffice@outremer-telecom.fr'
+    })
+  })
+  .then(r=>r.json())
+  .then(result=>{
+    if(result.error)throw new Error(result.error);
+    alert(
+      `✅ Dossier transmis au back-office\n\n`+
+      `Référence : ${ref}\n`+
+      `Client : ${client}\n`+
+      `Territoire : ${D.territoire||'—'}\n\n`+
+      `📧 Notification envoyée à : ${D.cons_email||'—'}\n`+
+      `Objet : « Le contrat souscrit le ${today} pour le client ${client} a été transmis ce jour aux équipes back-office sous la référence ${ref}. »\n\n`+
+      `📤 Dossier transmis à : ${D.bo_email||'backoffice@outremer-telecom.fr'}`
+    );
+  })
+  .catch(err=>{
+    if(btn){btn.disabled=false;btn.textContent='Valider et transmettre au back-office →';}
+    showErr('Erreur lors de la transmission : '+err.message);
+  });
+}
+
+async function envoyerLienSignature(){
+  if(!D.consent_cgv){showErr('Le client doit accepter les CGS avant de signer.');return;}
+  if(!D.fait_a){showErr('Veuillez indiquer la ville dans le champ "Fait à".');return;}
+  if(!D.qualite){showErr('Veuillez indiquer la qualité du signataire.');return;}
+  const sigEmail=D.sig_diff&&D.sig_email?D.sig_email:D.rl_email;
+  if(!sigEmail){showErr('Aucun e-mail de signataire trouvé — vérifiez l\'étape 3.');return;}
+
+  const btn=document.getElementById('btn-envoyer-lien');
+  if(btn){btn.disabled=true;btn.textContent='Envoi en cours...';}
+
+  try{
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/send-signature`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON},
+      body:JSON.stringify({D,ref})
+    });
+    const result=await res.json();
+    if(result.error)throw new Error(result.error);
+
+    // Succès — afficher confirmation
+    const btnZone=document.getElementById('btn-envoyer-lien');
+    if(btnZone){
+      btnZone.outerHTML=`<div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:8px;padding:12px 16px;text-align:center;font-size:13px;color:#065F46;margin-top:14px">
+        ✅ Lien de signature envoyé à <strong>${sigEmail}</strong><br>
+        <span style="font-size:11px;color:#6B7280;margin-top:4px;display:block">Référence dossier : <strong>${ref}</strong></span>
+      </div>`;
+    }
+  }catch(err){
+    if(btn){btn.disabled=false;btn.textContent='Envoyer le lien de signature au client →';}
+    showErr('Erreur : '+err.message+' — Vérifiez votre connexion et la configuration Supabase.');
+  }
 }
 
 const sbEl=document.getElementById('sb');
