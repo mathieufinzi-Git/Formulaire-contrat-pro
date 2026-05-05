@@ -150,7 +150,11 @@ async function signer(reference){
   try {
     const res = await fetch(VALIDATE_FUNCTION_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      headers: { 
+  'Content-Type': 'application/json', 
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+},
       body: JSON.stringify({ token, reference, fait_a, qualite, consent_mkt: document.getElementById('mkt')?.checked })
     });
     const result = await res.json();
