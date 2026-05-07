@@ -6,20 +6,21 @@
 <title>Signature de contrat — SFR Business</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;background:#F3F4F6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px}
-.container{max-width:680px;width:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;background:#F3F4F6;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.container{max-width:720px;width:100%}
 .header{background:#1A1A2E;color:#fff;padding:14px 20px;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:10px}
 .sfr-logo{background:#E2001A;color:#fff;font-weight:500;font-size:12px;padding:3px 10px;border-radius:4px}
-.card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);padding:20px;margin-bottom:10px}
-.card:last-child{border-radius:0 0 12px 12px}
+.card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);padding:18px 20px;margin-bottom:10px}
 .ctitle{font-size:10px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #F3F4F6}
 .row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #F9FAFB}
 .row:last-child{border-bottom:none}
-.rl{color:#6B7280}.rv{font-weight:500;text-align:right;max-width:60%}
+.rl{color:#6B7280;flex-shrink:0;margin-right:8px}
+.rv{font-weight:500;text-align:right;max-width:65%}
+.section-title{font-size:13px;font-weight:500;color:#1A1A2E;margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid #E2001A}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
 .field label{font-size:11px;color:#6B7280;font-weight:500}
 .req{color:#E2001A}
-.field input{font-size:12px;padding:8px 10px;border:1px solid #D1D5DB;border-radius:6px;width:100%}
+.field input{font-size:12px;padding:8px 10px;border:1px solid #D1D5DB;border-radius:6px;width:100%;font-family:inherit}
 .field input:focus{outline:none;border-color:#E2001A;box-shadow:0 0 0 2px rgba(226,0,26,.1)}
 .legal{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:6px;padding:10px 12px;font-size:11px;color:#6B7280;line-height:1.7;margin-bottom:12px}
 .legal b{color:#1A1A2E}
@@ -28,20 +29,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .chk{display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:12px;line-height:1.4}
 .chk input{margin-top:2px;accent-color:#E2001A;width:13px;height:13px;flex-shrink:0}
 .chk-desc{font-size:10px;color:#9CA3AF;margin-top:2px}
-.btn-sign{background:#10B981;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:8px}
-.btn-sign:hover{background:#059669}
-.btn-sign:disabled{background:#9CA3AF;cursor:not-allowed}
-.alert{border-radius:6px;padding:10px 12px;font-size:11px;margin-bottom:12px;line-height:1.5}
+.upload-item{border:0.5px solid #E5E7EB;border-radius:8px;padding:12px;margin-bottom:8px;background:#FAFAFA}
+.upload-label{font-size:12px;font-weight:500;color:#1A1A2E;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.upload-required{font-size:9px;padding:2px 7px;border-radius:20px;background:#FEF2F2;color:#B91C1C;font-weight:500;flex-shrink:0;margin-top:1px}
+.upload-zone{border:2px dashed #D1D5DB;border-radius:6px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-zone:hover{border-color:#E2001A;background:#FFF5F5}
+.upload-zone.uploaded{border-color:#10B981;background:#F0FDF4;border-style:solid}
+.upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-txt{font-size:12px;color:#6B7280}
+.upload-hint{font-size:10px;color:#9CA3AF;margin-top:3px}
+.upload-filename{font-size:12px;color:#065F46;font-weight:500}
+.upload-remove{font-size:10px;color:#E2001A;cursor:pointer;margin-left:6px;text-decoration:underline}
+.alert{border-radius:6px;padding:9px 12px;font-size:11px;margin-bottom:10px;line-height:1.6}
+.alert-info{background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF}
 .alert-warn{background:#FEF3C7;border:1px solid #FCD34D;color:#92400E}
 .alert-ok{background:#D1FAE5;border:1px solid #A7F3D0;color:#065F46}
 .alert-err{background:#FEE2E2;border:1px solid #FECACA;color:#991B1B}
-.loading{text-align:center;padding:40px;color:#6B7280;font-size:13px}
+.btn-sign{background:#10B981;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:8px;font-family:inherit}
+.btn-sign:hover{background:#059669}
+.btn-sign:disabled{background:#9CA3AF;cursor:not-allowed}
+.loading{text-align:center;padding:40px;color:#6B7280}
 .spinner{display:inline-block;width:24px;height:24px;border:3px solid #E5E7EB;border-top-color:#E2001A;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .success-screen{text-align:center;padding:40px 20px}
 .success-icon{font-size:48px;margin-bottom:16px}
 .success-title{font-size:20px;font-weight:500;margin-bottom:8px;color:#065F46}
 .success-desc{font-size:13px;color:#6B7280;line-height:1.6}
+.prog-steps{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.prog-step{padding:4px 10px;border-radius:20px;font-size:11px;background:#F3F4F6;border:1px solid #E5E7EB;color:#6B7280}
+.prog-step.done{background:#D1FAE5;color:#065F46;border-color:#A7F3D0}
 </style>
 </head>
 <body>
@@ -60,59 +76,153 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 // ═══════════════════════════════════════════════════════════
 // CONFIGURATION SUPABASE — REMPLACER CES 2 VALEURS
 // ═══════════════════════════════════════════════════════════
-const SUPABASE_URL     = 'https://ghxbrzonqxkeuusjrjcb.supabase.co';
-// Ex: 'https://abcdefghijklm.supabase.co'
-
+const SUPABASE_URL      = 'https://ghxbrzonqxkeuusjrjcb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGJyem9ucXhrZXV1c2pyamNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzU2NjgsImV4cCI6MjA5MzQxMTY2OH0.DHoB0wNHe95ADUBZN83S78RfS7hV72jzthCa9E7Rt_Y';
-// Ex: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
 // ═══════════════════════════════════════════════════════════
 
-const VALIDATE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/sign-client';
+const PJ_MAP = {
+  'Commerçant':['CNI recto/verso originale avec photographie en cours de validité','Extrait Kbis de moins de 3 mois'],
+  'Artisan':['CNI recto/verso originale avec photographie en cours de validité','Copie de la carte professionnelle en cours de validité'],
+  'Profession libérale':['CNI recto/verso originale avec photographie en cours de validité','Copie de la fiche SIRENE'],
+  'SARL / EURL':['CNI recto/verso du représentant légal avec photographie','Extrait Kbis de moins de 3 mois','Mandat écrit (si signataire différent)','Copie des statuts','Copie du PV autorisant le signataire à conclure'],
+  'SAS / SA / SCI / SCP':['CNI recto/verso du représentant légal avec photographie','Extrait Kbis de moins de 3 mois','Mandat écrit (si signataire différent)','Copie des statuts','Copie du PV autorisant le signataire à conclure'],
+  'Association déclarée':['Attestation délivrée par la préfecture','Copie intégrale des statuts','CNI recto/verso de la personne habilitée à contracter'],
+  'Syndicat professionnel':['Attestation délivrée par la préfecture','Copie intégrale des statuts','CNI recto/verso de la personne habilitée à contracter'],
+  'Fondation':['Copie du décret en Conseil d\'État publié au JO','CNI recto/verso de la personne habilitée à contracter'],
+  'Syndicat de copropriétaires':['Copie du PV de délibération d\'AG nommant le représentant'],
+  'État / Collectivité locale':['CNI recto/verso originale avec photographie','Attestation de l\'autorité responsable : délégation de signature'],
+  'Société en formation':['CNI recto/verso originale avec photographie','Récépissé de dépôt délivré par le greffe'],
+  'Établissement d\'enseignement libre':['Autorisation de fonctionnement délivrée par le Recteur','Attestation du Directeur diocésain si applicable','CNI recto/verso originale avec photographie']
+};
 
 const params = new URLSearchParams(window.location.search);
-const token = params.get('token');
+const token  = params.get('token');
+let DOSSIER  = null;
+const uploadedFiles = {};
 
 async function loadDossier(){
   if(!token){
-    document.getElementById('app').innerHTML = `<div class="card"><div class="alert alert-err">Lien invalide ou expiré.</div></div>`;
+    document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Lien invalide ou expiré.</div></div>`;
     return;
   }
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/dossiers?token_client=eq.${token}&select=*`, {
-      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/dossiers?token_client=eq.${token}&select=*`,{
+      headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}
     });
-    const data = await res.json();
-    if(!data || data.length === 0){
-      document.getElementById('app').innerHTML = `<div class="card"><div class="alert alert-err">Ce lien de signature est invalide ou a déjà été utilisé.</div></div>`;
+    const data=await res.json();
+    if(!data||data.length===0){
+      document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Ce lien de signature est invalide ou a déjà été utilisé.</div></div>`;
       return;
     }
-    const d = data[0];
-    if(d.statut !== 'en_attente_signature_client'){
-      document.getElementById('app').innerHTML = `<div class="card"><div class="alert alert-ok">✅ Ce contrat a déjà été signé. Merci !</div></div>`;
+    DOSSIER=data[0];
+    if(DOSSIER.statut!=='en_attente_signature_client'){
+      document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-ok">✅ Ce contrat a déjà été signé. Merci !</div></div>`;
       return;
     }
-    renderSign(d);
-  } catch(e){
-    document.getElementById('app').innerHTML = `<div class="card"><div class="alert alert-err">Erreur de chargement : ${e.message}</div></div>`;
+    renderSign();
+  }catch(e){
+    document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Erreur de chargement : ${e.message}</div></div>`;
   }
 }
 
-function renderSign(d){
-  const offresLabel = Array.isArray(d.offres) ? d.offres.join(', ') : '—';
-  const sigNom = d.sig_diff ? `${d.sig_prenom||''} ${d.sig_nom||''}`.trim() : `${d.rl_prenom||''} ${d.rl_nom||''}`.trim();
-  document.getElementById('app').innerHTML = `
+function buildRecapHTML(d){
+  const fact=d.adresse_facturation||{};
+  const gf=d.gestionnaire_flotte||{};
+  const offres=Array.isArray(d.offres)?d.offres:[];
+  const names={mobile:'Forfait PRO 4G/5G',carre:'Carré PRO Internet',box:'BOX 4G/5G PRO',fibre:'Fibre PRO',box4g:'Box Téléphonique 4G'};
+  let html=`
+    <div class="section-title">Dossier</div>
+    <div class="row"><span class="rl">Référence</span><span class="rv" style="font-family:monospace">${d.reference}</span></div>
+    <div class="row"><span class="rl">Territoire</span><span class="rv">${d.territoire||'—'}</span></div>
+    <div class="row"><span class="rl">Type</span><span class="rv">${d.dossier||'—'}</span></div>
+    ${d.avenant_num?`<div class="row"><span class="rl">N° contrat existant</span><span class="rv">${d.avenant_num}</span></div>`:''}
+    <div class="section-title">Titulaire</div>
+    <div class="row"><span class="rl">Raison sociale</span><span class="rv">${d.rs||'—'}</span></div>
+    <div class="row"><span class="rl">SIRET</span><span class="rv" style="font-family:monospace">${d.siret||'—'}</span></div>
+    <div class="row"><span class="rl">APE</span><span class="rv">${d.ape||'—'}</span></div>
+    <div class="row"><span class="rl">Adresse</span><span class="rv">${[d.rue,d.bat,d.cp,d.ville].filter(Boolean).join(', ')||'—'}</span></div>
+    <div class="row"><span class="rl">Téléphone</span><span class="rv">${d.tel||'—'}</span></div>
+    <div class="section-title">Représentant légal</div>
+    <div class="row"><span class="rl">Identité</span><span class="rv">${[d.rl_civ,d.rl_prenom,d.rl_nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="row"><span class="rl">Fonction</span><span class="rv">${d.rl_fn||'—'}</span></div>
+    <div class="row"><span class="rl">Mobile</span><span class="rv">${d.rl_mob||'—'}</span></div>
+    <div class="row"><span class="rl">E-mail</span><span class="rv">${d.rl_email||'—'}</span></div>`;
+  if(d.sig_diff)html+=`
+    <div class="section-title">Signataire</div>
+    <div class="row"><span class="rl">Identité</span><span class="rv">${[d.sig_civ,d.sig_prenom,d.sig_nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="row"><span class="rl">Fonction</span><span class="rv">${d.sig_fn||'—'}</span></div>
+    <div class="row"><span class="rl">E-mail</span><span class="rv">${d.sig_email||'—'}</span></div>`;
+  if(gf&&gf.nom)html+=`
+    <div class="section-title">Gestionnaire de flotte</div>
+    <div class="row"><span class="rl">Identité</span><span class="rv">${[gf.prenom,gf.nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="row"><span class="rl">Mobile</span><span class="rv">${gf.mob||'—'}</span></div>
+    <div class="row"><span class="rl">E-mail</span><span class="rv">${gf.email||'—'}</span></div>`;
+  html+=`
+    <div class="section-title">Adresse de facturation</div>
+    <div class="row"><span class="rl">Société</span><span class="rv">${fact.soc||d.rs||'—'}</span></div>
+    <div class="row"><span class="rl">Adresse</span><span class="rv">${[fact.rue||d.rue,fact.cp||d.cp,fact.ville||d.ville].filter(Boolean).join(', ')||'—'}</span></div>
+    <div class="section-title">Offres souscrites</div>`;
+  if(offres.length===0)html+=`<div style="font-size:12px;color:#9CA3AF;padding:4px 0">Aucune offre sélectionnée</div>`;
+  else offres.forEach(o=>{html+=`<div class="row"><span class="rl" style="font-weight:500">${names[o]||o}</span><span class="rv" style="color:#10B981">✓ Sélectionné</span></div>`;});
+  if(d.port_demande)html+=`
+    <div class="section-title">Portabilité</div>
+    <div class="row"><span class="rl">Numéro à porter</span><span class="rv">${d.port_num||'—'}</span></div>
+    <div class="row"><span class="rl">Opérateur actuel</span><span class="rv">${d.port_op||'—'}</span></div>
+    <div class="row"><span class="rl">Code RIO</span><span class="rv" style="font-family:monospace">${d.port_rio||'—'}</span></div>`;
+  html+=`
+    <div class="section-title">Mandat SEPA</div>
+    <div class="row"><span class="rl">Société</span><span class="rv">${d.rs||'—'}</span></div>
+    <div class="row"><span class="rl">IBAN</span><span class="rv" style="font-family:monospace;font-size:11px">${d.iban||'—'}</span></div>
+    <div class="row"><span class="rl">BIC</span><span class="rv" style="font-family:monospace">${d.bic||'—'}</span></div>`;
+  return html;
+}
+
+function buildPJHTML(d){
+  const docs=PJ_MAP[d.pj_statut||'']||[];
+  const communs=['RIB au nom du titulaire du contrat'];
+  if(d.sig_diff)communs.push('Pouvoir du représentant légal en faveur du signataire');
+  const allDocs=[...docs,...communs];
+  if(allDocs.length===0)return `<div class="alert alert-info">Aucun document requis identifié — vérifiez avec votre conseiller.</div>`;
+  let html=`<div class="alert alert-info" style="margin-bottom:12px">Statut juridique : <strong>${d.pj_statut||'Non renseigné'}</strong><br>Veuillez joindre les <strong>${allDocs.length} document(s)</strong> ci-dessous. Formats : PDF, JPG, PNG — 5 Mo max par fichier.</div>`;
+  allDocs.forEach((doc,i)=>{
+    html+=`<div class="upload-item">
+      <div class="upload-label">
+        <span>${i+1}. ${doc}</span>
+        <span class="upload-required">Obligatoire</span>
+      </div>
+      <div class="upload-zone" id="zone_${i}" onclick="document.getElementById('file_${i}').click()" ondragover="dragOver(event,${i})" ondragleave="dragLeave(event,${i})" ondrop="drop(event,${i})">
+        <input type="file" id="file_${i}" class="upload-input" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(${i},this.files[0])">
+        <div id="uc_${i}">
+          <div class="upload-txt">📎 Cliquer pour joindre ou glisser-déposer</div>
+          <div class="upload-hint">PDF, JPG ou PNG — 5 Mo max</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderSign(){
+  const d=DOSSIER;
+  const sigNom=d.sig_diff?`${d.sig_prenom||''} ${d.sig_nom||''}`.trim():`${d.rl_prenom||''} ${d.rl_nom||''}`.trim();
+  document.getElementById('app').innerHTML=`
     <div class="card">
-      <div class="ctitle">Récapitulatif de votre contrat</div>
-      <div class="row"><span class="rl">Référence</span><span class="rv" style="font-family:monospace">${d.reference}</span></div>
-      <div class="row"><span class="rl">Client</span><span class="rv">${d.rs||'—'}</span></div>
-      <div class="row"><span class="rl">Territoire</span><span class="rv">${d.territoire||'—'}</span></div>
-      <div class="row"><span class="rl">Type</span><span class="rv">${d.dossier||'—'}</span></div>
-      <div class="row"><span class="rl">Offres</span><span class="rv">${offresLabel}</span></div>
-      <div class="row"><span class="rl">SIRET</span><span class="rv">${d.siret||'—'}</span></div>
+      <div class="prog-steps">
+        <span class="prog-step done">1. Récapitulatif</span>
+        <span class="prog-step done">2. Pièces justificatives</span>
+        <span class="prog-step done">3. Consentements</span>
+        <span class="prog-step done">4. Signature</span>
+      </div>
+      <div class="ctitle">Récapitulatif complet de votre contrat</div>
+      ${buildRecapHTML(d)}
+    </div>
+    <div class="card">
+      <div class="ctitle">Pièces justificatives <span class="req">*</span></div>
+      ${buildPJHTML(d)}
     </div>
     <div class="card">
       <div class="ctitle">Mentions légales RGPD</div>
-      <div class="legal">Conformément aux lois et réglementations françaises et européennes en vigueur, nous vous informons qu'<b>OUTREMER TELECOM</b> collecte et traite vos données personnelles. Ces données sont nécessaires à l'exécution de votre contrat. Pour exercer vos droits, contactez : <b>donneespersonnelles@sfrcaraibe.com</b>. Retrouvez toutes les informations sur <b>www.sfrcaraibe.fr</b>.</div>
+      <div class="legal">Conformément aux lois et réglementations françaises et européennes en vigueur, nous vous informons qu'<b>OUTREMER TELECOM</b> collecte et traite vos données personnelles. Ces données sont nécessaires à l'exécution de votre contrat et elles sont traitées et transmises aux sociétés de notre Groupe, ainsi qu'à nos prestataires, pour la gestion de votre compte. Pour exercer vos droits, contactez : <b>donneespersonnelles@sfrcaraibe.com</b> ou via <b>www.sfrcaraibe.fr</b>.</div>
       <div class="consent-box required">
         <label class="chk"><input type="checkbox" id="cgv"><div>
           <div style="font-weight:500">Je déclare avoir pris connaissance et accepter les termes des conditions générales de souscription, des descriptifs d'offres et de tarifs et des conditions particulières <span class="req">*</span></div>
@@ -127,50 +237,129 @@ function renderSign(d){
       </div>
     </div>
     <div class="card">
-      <div class="ctitle">Signature</div>
-      <div class="alert alert-warn">Veuillez remplir les champs ci-dessous pour valider votre signature électronique.</div>
+      <div class="ctitle">Signature électronique</div>
+      <div class="alert alert-warn">En signant, vous certifiez l'exactitude des informations et l'authenticité des pièces jointes.</div>
       <div class="field"><label>Fait à <span class="req">*</span></label><input type="text" id="fait_a" placeholder="${d.ville||'Ville'}"></div>
       <div class="field"><label>Qualité du signataire <span class="req">*</span></label><input type="text" id="qualite" placeholder="Ex : Gérant, Directeur Général..." value="${d.qualite_sig||''}"></div>
       <div style="font-size:11px;color:#9CA3AF;margin-bottom:12px">Signataire : <strong>${sigNom}</strong> — Date : <strong>${new Date().toLocaleDateString('fr-FR')}</strong></div>
-      <button class="btn-sign" id="btn-sign" onclick="signer('${d.reference}')">Confirmer et signer mon contrat →</button>
+      <div id="upload-status" style="display:none" class="alert alert-warn"></div>
+      <button class="btn-sign" id="btn-sign" onclick="signer()">Confirmer et signer mon contrat →</button>
     </div>`;
 }
 
-async function signer(reference){
-  const cgv = document.getElementById('cgv')?.checked;
-  const fait_a = document.getElementById('fait_a')?.value?.trim();
-  const qualite = document.getElementById('qualite')?.value?.trim();
-  if(!cgv){ alert('Vous devez accepter les conditions générales de souscription pour signer.'); return; }
-  if(!fait_a){ alert('Veuillez indiquer la ville.'); return; }
-  if(!qualite){ alert('Veuillez indiquer votre qualité (fonction).'); return; }
+function dragOver(e,i){e.preventDefault();document.getElementById('zone_'+i)?.classList.add('dragover');}
+function dragLeave(e,i){document.getElementById('zone_'+i)?.classList.remove('dragover');}
+function drop(e,i){e.preventDefault();dragLeave(e,i);const f=e.dataTransfer?.files[0];if(f)handleFile(i,f);}
 
-  document.getElementById('btn-sign').disabled = true;
-  document.getElementById('btn-sign').textContent = 'Signature en cours...';
+function handleFile(i,file){
+  if(!file)return;
+  if(file.size>5*1024*1024){alert('Fichier trop volumineux — 5 Mo maximum.');return;}
+  uploadedFiles[i]={file,name:file.name,status:'pending'};
+  const zone=document.getElementById('zone_'+i);
+  const uc=document.getElementById('uc_'+i);
+  if(zone)zone.classList.add('uploaded');
+  if(uc)uc.innerHTML=`<div class="upload-filename">✅ ${file.name}</div><div class="upload-hint">${(file.size/1024).toFixed(0)} Ko — <span class="upload-remove" onclick="removeFile(event,${i})">Supprimer</span></div>`;
+}
 
-  try {
-    const res = await fetch(VALIDATE_FUNCTION_URL, {
-      method: 'POST',
-      headers: { 
-  'Content-Type': 'application/json', 
-  'apikey': SUPABASE_ANON_KEY,
-  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-},
-      body: JSON.stringify({ token, reference, fait_a, qualite, consent_mkt: document.getElementById('mkt')?.checked })
+function removeFile(e,i){
+  e.stopPropagation();
+  delete uploadedFiles[i];
+  const zone=document.getElementById('zone_'+i);
+  const uc=document.getElementById('uc_'+i);
+  if(zone)zone.classList.remove('uploaded');
+  if(uc)uc.innerHTML=`<div class="upload-txt">📎 Cliquer pour joindre ou glisser-déposer</div><div class="upload-hint">PDF, JPG ou PNG — 5 Mo max</div>`;
+  const fi=document.getElementById('file_'+i);
+  if(fi)fi.value='';
+}
+
+function getRequiredCount(){
+  const d=DOSSIER;
+  const docs=PJ_MAP[d.pj_statut||'']||[];
+  let communs=1; // RIB toujours obligatoire
+  if(d.sig_diff)communs++;
+  return docs.length+communs;
+}
+
+async function uploadAllFiles(reference){
+  const urls=[];
+  for(const [idx,item] of Object.entries(uploadedFiles)){
+    const ext=item.file.name.split('.').pop().toLowerCase();
+    const path=`${reference}/doc_${idx}_${Date.now()}.${ext}`;
+    const res=await fetch(`${SUPABASE_URL}/storage/v1/object/pieces-jointes/${path}`,{
+      method:'POST',
+      headers:{
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+        'Content-Type':item.file.type||'application/octet-stream',
+        'x-upsert':'true'
+      },
+      body:item.file
     });
-    const result = await res.json();
-    if(!res.ok) throw new Error(result.error||'Erreur inconnue');
-    document.getElementById('app').innerHTML = `
-      <div class="card">
+    if(!res.ok){
+      const err=await res.text();
+      throw new Error(`Upload document ${parseInt(idx)+1} échoué : ${err}`);
+    }
+    urls.push({index:parseInt(idx),name:item.name,path});
+  }
+  return urls;
+}
+
+async function signer(){
+  const d=DOSSIER;
+  const cgv=document.getElementById('cgv')?.checked;
+  const fait_a=document.getElementById('fait_a')?.value?.trim();
+  const qualite=document.getElementById('qualite')?.value?.trim();
+  if(!cgv){alert('Vous devez accepter les conditions générales de souscription pour signer.');return;}
+  if(!fait_a){alert('Veuillez indiquer la ville.');return;}
+  if(!qualite){alert('Veuillez indiquer votre qualité (fonction).');return;}
+  const reqCount=getRequiredCount();
+  const uploadedCount=Object.keys(uploadedFiles).length;
+  if(uploadedCount<reqCount){
+    alert(`Veuillez joindre tous les documents obligatoires.\n${uploadedCount} fichier(s) joint(s) sur ${reqCount} requis.`);
+    return;
+  }
+  const btn=document.getElementById('btn-sign');
+  const statusEl=document.getElementById('upload-status');
+  if(btn){btn.disabled=true;btn.textContent='Traitement en cours...';}
+  if(statusEl){statusEl.style.display='block';statusEl.textContent='⏳ Upload des pièces justificatives en cours...';}
+  try{
+    const pjUrls=await uploadAllFiles(d.reference);
+    if(statusEl)statusEl.textContent='⏳ Enregistrement de la signature...';
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/sign-client`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':'Bearer '+SUPABASE_ANON_KEY
+      },
+      body:JSON.stringify({
+        token,
+        reference:d.reference,
+        fait_a,
+        qualite,
+        consent_mkt:document.getElementById('mkt')?.checked||false,
+        pj_urls:pjUrls
+      })
+    });
+    const result=await res.json();
+    if(!res.ok)throw new Error(result.error||'Erreur inconnue');
+    document.getElementById('app').innerHTML=`
+      <div class="card" style="border-radius:0 0 12px 12px">
         <div class="success-screen">
           <div class="success-icon">✅</div>
           <div class="success-title">Contrat signé avec succès !</div>
-          <div class="success-desc">Votre signature a bien été enregistrée.<br>Référence : <strong>${reference}</strong><br><br>Vous recevrez une confirmation par e-mail. Notre équipe back-office vous contactera prochainement pour la mise en service.</div>
+          <div class="success-desc">
+            Votre signature et vos pièces justificatives ont bien été enregistrées.<br>
+            Référence : <strong>${d.reference}</strong><br><br>
+            Vous recevrez une confirmation par e-mail.<br>
+            Notre équipe back-office vous contactera prochainement pour la mise en service.
+          </div>
         </div>
       </div>`;
-  } catch(e){
-    document.getElementById('btn-sign').disabled = false;
-    document.getElementById('btn-sign').textContent = 'Confirmer et signer mon contrat →';
-    alert('Erreur lors de la signature : ' + e.message);
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='Confirmer et signer mon contrat →';}
+    if(statusEl)statusEl.style.display='none';
+    alert('Erreur : '+e.message);
   }
 }
 
