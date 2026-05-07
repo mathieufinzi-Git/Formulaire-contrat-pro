@@ -310,7 +310,7 @@ function rTit(){
   return `<div class="stag">Étape 2</div><div class="stitle">Titulaire du contrat</div><div class="ssub">Informations légales de l'entreprise — en lettres capitales</div>
   <div class="card"><div class="ctitle">Identification</div><div class="g2">
     <div class="field full"><label>Raison sociale <span class="req">*</span></label><input type="text" id="frs" value="${D.rs}" style="text-transform:uppercase"></div>
-    <div class="field"><label>SIRET <span class="req">*</span></label><input type="text" id="fsiret" placeholder="14 chiffres" maxlength="17" value="${D.siret}"><div class="hint">14 chiffres — espaces autorisés</div></div>
+    <div class="field"><label>SIRET <span class="req">*</span></label><input type="text" id="fsiret" placeholder="14 chiffres" maxlength="14" value="${D.siret}"><div class="hint">14 chiffres — sans espaces</div></div>
     <div class="field"><label>Code APE / NAF <span class="req">*</span></label><input type="text" id="fape" placeholder="Ex : 6110Z" maxlength="5" value="${D.ape}" style="text-transform:uppercase"><div class="hint">4 chiffres + 1 lettre</div></div>
     <div class="field full"><label>Rue <span class="req">*</span></label><input type="text" id="frue" value="${D.rue}"></div>
     <div class="field"><label>Bâtiment / Résidence</label><input type="text" id="fbat" value="${D.bat}"></div>
@@ -703,7 +703,20 @@ function rSEPA(){
 function rRecap(){
   const sigEmail=D.sig_diff&&D.sig_email?D.sig_email:(D.rl_email||'—');
   const on={mobile:'Forfait PRO 4G/5G',carre:'Carré PRO Internet',box:'BOX 4G/5G PRO',fibre:'Fibre PRO',box4g:'Box Téléphonique 4G'};
-  return `<div class="stag">Étape 10</div><div class="stitle">Récapitulatif et consentements</div><div class="ssub">Vérifiez toutes les informations avant de signer</div>
+  const offerDetail=(o)=>{
+    let d='';
+    if(o==='mobile')D.mob_lines.forEach((ln,i)=>{
+      if(ln.f)d+=`<div class="rrow"><span class="rl">Ligne ${i+1}</span><span class="rv">${ln.f.toUpperCase()} · ${ln.formule||'—'}${ln.terminal?' · Terminal : '+ln.terminal:''}</span></div>`;
+    });
+    if(o==='carre')D.carre_lines.forEach((ln,i)=>{
+      if(ln.g10||ln.g50)d+=`<div class="rrow"><span class="rl">Ligne ${i+1}</span><span class="rv">${ln.g10?'10 Go — 9,99 €/mois':'50 Go — 19,99 €/mois'}${ln.mod?' · '+ln.mod:''}</span></div>`;
+    });
+    if(o==='box'&&D.box_offre)d+=`<div class="rrow"><span class="rl">Offre</span><span class="rv">${D.box_offre==='300'?'4G PRO 300 Go — 44,99 €/mois':'4G/5G PRO 500 Go — 74,99 €/mois'}</span></div>${D.box_elig?`<div class="rrow"><span class="rl">ID éligibilité</span><span class="rv">${D.box_elig}</span></div>`:''}`;
+    if(o==='fibre'&&D.fibre_offre)d+=`<div class="rrow"><span class="rl">Offre</span><span class="rv">${D.fibre_offre}</span></div>${D.fibre_elig?`<div class="rrow"><span class="rl">Code éligibilité</span><span class="rv">${D.fibre_elig}</span></div>`:''}${D.fibre_commune?`<div class="rrow"><span class="rl">Adresse installation</span><span class="rv">${[D.fibre_rue,D.fibre_commune].filter(Boolean).join(', ')}</span></div>`:''}`;
+    if(o==='box4g')d+=`<div class="rrow"><span class="rl">Box Téléphonique 4G</span><span class="rv">17,00 € HT/mois</span></div>${D.b4g_elig?`<div class="rrow"><span class="rl">ID éligibilité</span><span class="rv">${D.b4g_elig}</span></div>`:''}`;
+    return d;
+  };
+  return `<div class="stag">Étape 10</div><div class="stitle">Récapitulatif du dossier</div><div class="ssub">Vérifiez toutes les informations — le client les recevra dans l'e-mail de signature</div>
   <div class="recap-sec"><div class="rtitle">Dossier</div>
     <div class="rrow"><span class="rl">Référence</span><span class="rv" style="font-family:var(--font-mono)">${ref}</span></div>
     <div class="rrow"><span class="rl">Territoire</span><span class="rv">${D.territoire||'—'}</span></div>
@@ -714,100 +727,81 @@ function rRecap(){
     <div class="rrow"><span class="rl">Raison sociale</span><span class="rv">${D.rs||'—'}</span></div>
     <div class="rrow"><span class="rl">SIRET</span><span class="rv" style="font-family:var(--font-mono)">${D.siret||'—'}</span></div>
     <div class="rrow"><span class="rl">APE</span><span class="rv">${D.ape||'—'}</span></div>
-    <div class="rrow"><span class="rl">Adresse</span><span class="rv">${[D.rue,D.cp,D.ville].filter(Boolean).join(', ')||'—'}</span></div>
+    <div class="rrow"><span class="rl">Adresse</span><span class="rv">${[D.rue,D.bat,D.cp,D.ville].filter(Boolean).join(', ')||'—'}</span></div>
     <div class="rrow"><span class="rl">Téléphone</span><span class="rv">${D.tel||'—'}</span></div>
     <div class="rrow"><span class="rl">E-mail titulaire</span><span class="rv">${D.email||'—'}</span></div>
   </div>
-  <div class="recap-sec"><div class="rtitle">Signataire</div>
-    <div class="rrow"><span class="rl">Identité</span><span class="rv">${D.sig_diff?[D.sig_civ,D.sig_prenom,D.sig_nom].filter(Boolean).join(' '):[D.rl_civ,D.rl_prenom,D.rl_nom].filter(Boolean).join(' ')||'—'}</span></div>
-    <div class="rrow"><span class="rl">Fonction</span><span class="rv">${D.sig_diff?(D.sig_fn||'—'):(D.rl_fn||'—')}</span></div>
-    <div class="rrow"><span class="rl">E-mail signature</span><span class="rv" style="color:var(--red);font-weight:500">${sigEmail}</span></div>
+  <div class="recap-sec"><div class="rtitle">Représentant légal</div>
+    <div class="rrow"><span class="rl">Identité</span><span class="rv">${[D.rl_civ,D.rl_prenom,D.rl_nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="rrow"><span class="rl">Fonction</span><span class="rv">${D.rl_fn||'—'}</span></div>
+    <div class="rrow"><span class="rl">Tél. mobile</span><span class="rv">${D.rl_mob||'—'}</span></div>
+    <div class="rrow"><span class="rl">E-mail</span><span class="rv">${D.rl_email||'—'}</span></div>
+  </div>
+  ${D.sig_diff?`<div class="recap-sec"><div class="rtitle">Signataire</div>
+    <div class="rrow"><span class="rl">Identité</span><span class="rv">${[D.sig_civ,D.sig_prenom,D.sig_nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="rrow"><span class="rl">Fonction</span><span class="rv">${D.sig_fn||'—'}</span></div>
+    <div class="rrow"><span class="rl">E-mail signataire</span><span class="rv" style="color:var(--red)">${D.sig_email||'—'}</span></div>
+  </div>`:''}
+  ${D.gf_nom?`<div class="recap-sec"><div class="rtitle">Gestionnaire de flotte</div>
+    <div class="rrow"><span class="rl">Identité</span><span class="rv">${[D.gf_prenom,D.gf_nom].filter(Boolean).join(' ')||'—'}</span></div>
+    <div class="rrow"><span class="rl">Mobile</span><span class="rv">${D.gf_mob||'—'}</span></div>
+    <div class="rrow"><span class="rl">E-mail</span><span class="rv">${D.gf_email||'—'}</span></div>
+  </div>`:''}
+  <div class="recap-sec"><div class="rtitle">Adresse de facturation</div>
+    <div class="rrow"><span class="rl">Société</span><span class="rv">${D.fact_soc||D.rs||'—'}</span></div>
+    <div class="rrow"><span class="rl">Adresse</span><span class="rv">${[D.fact_rue||D.rue,D.fact_cp||D.cp,D.fact_ville||D.ville].filter(Boolean).join(', ')||'—'}</span></div>
   </div>
   <div class="recap-sec"><div class="rtitle">Offres souscrites</div>
-    ${D.offres.length?D.offres.map(o=>{
-      let d='';
-      if(o==='mobile')D.mob_lines.forEach((ln,i)=>{if(ln.f)d+=`<div class="rrow"><span class="rl">Ligne ${i+1}</span><span class="rv">${ln.f.toUpperCase()} · ${ln.formule||'—'}${ln.terminal?' · '+ln.terminal:''}</span></div>`;});
-      if(o==='box'&&D.box_offre)d+=`<div class="rrow"><span class="rl">BOX</span><span class="rv">${D.box_offre==='300'?'4G PRO 300 Go — 44,99 €/mois':'4G/5G PRO 500 Go — 74,99 €/mois'}</span></div>`;
-      if(o==='fibre'&&D.fibre_offre)d+=`<div class="rrow"><span class="rl">Fibre</span><span class="rv">${D.fibre_offre}</span></div>`;
-      if(o==='box4g')d+=`<div class="rrow"><span class="rl">Box 4G</span><span class="rv">17,00 € HT/mois</span></div>`;
-      return `<div style="padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 0">${on[o]||o}</div>${d}</div>`;
-    }).join(''):`<div style="font-size:11px;color:#EF4444">Aucune offre sélectionnée</div>`}
+    ${D.offres.length?D.offres.map(o=>`<div style="padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:3px 0">${on[o]||o}</div>${offerDetail(o)}</div>`).join(''):`<div style="font-size:11px;color:#EF4444">Aucune offre sélectionnée</div>`}
   </div>
-  <div class="recap-sec"><div class="rtitle">SEPA</div>
+  ${D.port?`<div class="recap-sec"><div class="rtitle">Portabilité</div>
+    <div class="rrow"><span class="rl">Numéro à porter</span><span class="rv">${D.port_num||'—'}</span></div>
+    <div class="rrow"><span class="rl">Opérateur actuel</span><span class="rv">${D.port_op||'—'}</span></div>
+    <div class="rrow"><span class="rl">Code RIO</span><span class="rv" style="font-family:var(--font-mono)">${D.port_rio||'—'}</span></div>
+    ${D.port_date?`<div class="rrow"><span class="rl">Date souhaitée</span><span class="rv">${D.port_date}</span></div>`:''}
+  </div>`:''}
+  <div class="recap-sec"><div class="rtitle">Mandat SEPA</div>
+    <div class="rrow"><span class="rl">Société</span><span class="rv">${D.rs||'—'}</span></div>
     <div class="rrow"><span class="rl">IBAN</span><span class="rv" style="font-family:var(--font-mono);font-size:10px">${D.iban||'—'}</span></div>
     <div class="rrow"><span class="rl">BIC</span><span class="rv" style="font-family:var(--font-mono)">${D.bic||'—'}</span></div>
   </div>
-  <div class="card"><div class="ctitle">Mentions légales RGPD</div>
-    <div class="legal-box">Conformément aux lois et réglementations françaises et européennes en vigueur, nous vous informons qu'<b>OUTREMER TELECOM</b> collecte et traite vos données personnelles. Ces données sont nécessaires à l'exécution de votre contrat et elles sont traitées et transmises aux sociétés de notre Groupe, ainsi qu'à nos prestataires, pour la gestion de votre compte et votre information sur vos services. Elles peuvent faire l'objet d'un transfert hors UE et sont conservées pour la durée de la fourniture des Services et/ou de la finalité des traitements spécifiques. Pour exercer vos droits (accès, limitation, rectification, effacement, opposition et portabilité), envoyez un courrier à : <b>Outremer Telecom, Service Clients — Données Personnelles, ZI La Jambette, CS 90013, 97282 Le Lamentin Cedex</b>, ou par courriel à <b>donneespersonnelles@sfrcaraibe.com</b>, ou via votre espace client. Retrouvez toutes les informations sur <b>www.sfrcaraibe.fr</b>.</div>
-  </div>
-  <div class="card"><div class="ctitle">Consentements</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="border:0.5px solid var(--red);border-radius:var(--border-radius-md);padding:12px">
-        <label class="chk" style="align-items:flex-start"><input type="checkbox" id="fcgv" ${D.consent_cgv?'checked':''}><div>
-          <div style="font-weight:500">Je déclare avoir pris connaissance et accepter les termes des conditions générales de souscription, des descriptifs d'offres et de tarifs et des conditions particulières <span class="req">*</span></div>
-          <div class="cdesc">Remis par l'agent ou disponibles sur le site www.sfrcaraibe.fr</div>
-        </div></label>
-      </div>
-      <div style="border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px">
-        <label class="chk" style="align-items:flex-start"><input type="checkbox" id="fmkt" ${D.consent_mkt?'checked':''}><div>
-          <div>J'accepte que les données collectées me concernant soient traitées dans le cadre d'opérations de marketing direct</div>
-          <div class="cdesc">Optionnel — Opposition possible à tout moment</div>
-        </div></label>
-      </div>
-    </div>
-  </div>
-  <div class="card"><div class="ctitle">Signature du client</div>
-    <div class="g2">
-      <div class="field"><label>Fait à <span class="req">*</span></label><input type="text" id="ffaita" placeholder="${D.ville||'Ville'}" value="${D.fait_a}"></div>
-      <div class="field"><label>Le</label><input type="text" value="${new Date().toLocaleDateString('fr-FR')}" readonly style="background:var(--color-background-secondary);color:var(--color-text-tertiary)"><div class="hint">Horodaté automatiquement</div></div>
-      <div class="field full"><label>Qualité du signataire <span class="req">*</span></label><input type="text" id="fqualite" placeholder="Ex : Gérant, Directeur Général, Président..." value="${D.qualite}"><div class="hint">Précédée de la mention « lu et approuvé » — requise pour la validité juridique</div></div>
-    </div>
-    <div class="alert ainfo" style="margin-top:10px">
-      Le lien de signature électronique sera envoyé à : <b>${sigEmail}</b><br>
-      <span style="font-size:10px">${D.sig_diff?'E-mail du signataire (différent du représentant légal)':'E-mail du représentant légal'}</span>
-    </div>
+  <div class="alert ainfo">
+    Le lien de signature électronique sera envoyé à : <b>${sigEmail}</b><br>
+    <span style="font-size:10px">${D.sig_diff?'E-mail du signataire (différent du représentant légal)':'E-mail du représentant légal'}</span>
   </div>
   <div class="card"><div class="ctitle">Processus de validation — 100% distance</div>
-    <div class="wfstep"><div class="wfnum cur">1</div><div><div class="wftitle">Envoi du lien de signature au client</div><div class="wfdesc">Un lien de signature sécurisé est envoyé par e-mail à <b>${sigEmail}</b>. Le client consulte le récapitulatif complet, accepte les CGS, saisit sa qualité et signe électroniquement.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">2</div><div><div class="wftitle">Notification au conseiller</div><div class="wfdesc">Dès la signature client validée, une notification est envoyée automatiquement à l'e-mail du conseiller.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">3</div><div><div class="wftitle">Validation et signature du conseiller</div><div class="wfdesc">Le conseiller accède à la section réservée (Étape 11), renseigne son code, saisit son e-mail et appose sa signature. Cette étape engage sa responsabilité professionnelle.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Transmission au back-office</div><div class="wfdesc">Le dossier complet — données + pièces justificatives + 2 signatures — est transmis automatiquement au back-office. Client et conseiller reçoivent chacun un exemplaire PDF par e-mail.</div></div></div>
-  </div>
-  <div style="display:flex;justify-content:center;margin-top:14px">
-    <button class="btn bsub" id="btn-envoyer-lien" onclick="envoyerLienSignature()">Envoyer le lien de signature au client →</button>
+    <div class="wfstep"><div class="wfnum cur">1</div><div><div class="wftitle">Conseiller complète l'étape 11 et envoie le lien</div><div class="wfdesc">Après avoir renseigné ses informations à l'étape 11, le conseiller déclenche l'envoi du lien de signature au client.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">2</div><div><div class="wftitle">Client signe via le lien sécurisé</div><div class="wfdesc">Le client reçoit l'e-mail, consulte le récapitulatif complet, accepte les CGS et signe électroniquement.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">3</div><div><div class="wftitle">Notification au conseiller</div><div class="wfdesc">Dès la signature client validée, le conseiller reçoit un e-mail avec un lien de validation sécurisé.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Conseiller valide via son lien sécurisé</div><div class="wfdesc">Le conseiller clique son lien, accède à la page de validation et confirme le dossier.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">5</div><div><div class="wftitle">Transmission automatique au back-office</div><div class="wfdesc">Le dossier complet est transmis. Client, conseiller et back-office reçoivent chacun un exemplaire.</div></div></div>
   </div>`;
 }
 
 /* ── ÉTAPE 11 : Conseiller ── */
 function rCons(){
-  return `<div class="stag">Étape 11 — Zone réservée</div><div class="stitle">Section conseiller</div><div class="ssub">Accès exclusif au conseiller SFR Business — verrouillé côté client</div>
+  return `<div class="stag">Étape 11 — Zone réservée</div><div class="stitle">Section conseiller</div><div class="ssub">Renseignez vos informations puis envoyez le lien de signature au client</div>
   <div class="consbanner"><div class="consicon">C</div><div style="flex:1"><div style="font-size:12px;font-weight:500">Zone sécurisée conseiller</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Non modifiable par le client — processus 100% distance</div></div><div style="font-size:10px;background:rgba(255,255,255,.1);padding:3px 9px;border-radius:20px;color:rgba(255,255,255,.7)">Verrouillé client</div></div>
   <div class="card"><div class="ctitle">Identification du conseiller</div><div class="g2">
     <div class="field"><label>Code conseiller <span class="req">*</span></label><input type="text" id="fconscode" maxlength="8" value="${D.cons_code}"><div class="hint">Code interne SFR Business</div></div>
     <div class="field"><label>Segment</label><div class="rgroup" style="margin-top:4px"><label class="rbtn sel"><input type="radio" checked>D</label></div></div>
     <div class="field full"><label>Nom du conseiller <span class="req">*</span></label><input type="text" id="fconsnom" value="${D.cons_nom}"></div>
-    <div class="field full"><label>E-mail du conseiller <span class="req">*</span></label><input type="email" id="fconsemail" value="${D.cons_email}" placeholder="conseiller@sfr-business.fr"><div class="hint">Utilisé pour la notification de signature client et l'envoi de l'exemplaire final</div></div>
+    <div class="field full"><label>E-mail du conseiller <span class="req">*</span></label><input type="email" id="fconsemail" value="${D.cons_email}" placeholder="conseiller@sfr-business.fr"><div class="hint">Vous recevrez ici la notification quand le client aura signé, ainsi que l'exemplaire final</div></div>
   </div></div>
   <div class="card"><div class="ctitle">Transmission back-office</div>
     <div class="field"><label>E-mail back-office <span class="req">*</span></label><input type="email" id="fbomail" value="${D.bo_email}"><div class="hint">Adresse par défaut — modifiable si nécessaire</div></div>
   </div>
-  <div class="card"><div class="ctitle">Récapitulatif dossier</div><div style="font-size:12px">
-    <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Référence</span><span style="font-family:var(--font-mono);font-weight:500">${ref}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Titulaire</span><span style="font-weight:500">${D.rs||'—'}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="color:var(--color-text-secondary)">Territoire</span><span style="font-weight:500">${D.territoire||'—'}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--color-text-secondary)">Offres</span><span style="font-weight:500;text-align:right">${D.offres.length?D.offres.join(' · '):'—'}</span></div>
-  </div></div>
-  <div class="card"><div class="ctitle">Commentaires internes</div><textarea style="width:100%;height:80px;resize:vertical;font-family:var(--font-sans)" placeholder="Notes internes, conditions particulières..."></textarea></div>
-  <div class="card" style="border-color:var(--color-border-warning)"><div class="ctitle">Cachet et signature conseiller</div>
-    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:18px;text-align:center;margin-bottom:12px;border:1px dashed var(--color-border-secondary)">
-      <div style="font-size:11px;color:var(--color-text-tertiary)">Zone de signature numérique du conseiller</div>
+  <div class="card"><div class="ctitle">Commentaires internes</div>
+    <textarea style="width:100%;height:80px;resize:vertical;font-family:var(--font-sans)" placeholder="Notes internes, conditions particulières..." oninput="D.cons_comment=this.value">${D.cons_comment||''}</textarea>
+  </div>
+  <div class="card" style="border-color:#10B981">
+    <div class="ctitle" style="color:#065F46">Envoyer le lien de signature au client</div>
+    <div class="alert ainfo" style="margin-bottom:12px">
+      Une fois que vous avez tout vérifié, cliquez ci-dessous pour envoyer le lien de signature sécurisé au client.<br>
+      <strong>Destinataire :</strong> ${D.sig_diff&&D.sig_email?D.sig_email:(D.rl_email||'E-mail non renseigné — vérifiez l\'étape 3')}
     </div>
-    <label class="chk"><input type="checkbox" id="fconsvalid" ${D.cons_valid?'checked':''}><div>
-      <div style="font-weight:500">Je valide ce dossier et certifie l'exactitude des informations <span class="req">*</span></div>
-      <div class="cdesc">Cette validation engage ma responsabilité en tant que conseiller SFR Business. Le dossier sera transmis au back-office à la suite de cette validation.</div>
-    </div></label>
-    <div style="margin-top:12px;display:flex;justify-content:flex-end">
-      <button class="btn bsub" onclick="doSubmit()">Valider et transmettre au back-office →</button>
+    <div id="btn-envoyer-lien-zone" style="display:flex;justify-content:center">
+      <button class="btn bsub" id="btn-envoyer-lien" onclick="envoyerLienSignature()">Envoyer le lien de signature au client →</button>
     </div>
   </div>`;
 }
@@ -818,7 +812,7 @@ function bindAll(){
   const BCx=(id,key,cb)=>{const el=document.getElementById(id);if(!el)return;el.checked=!!D[key];el.addEventListener('change',()=>{D[key]=el.checked;if(cb)cb();});};
 
   Bx('fav','avenant');
-  Bx('frs','rs',v=>v.toUpperCase());Bx('fsiret','siret');Bx('fape','ape',v=>v.toUpperCase());
+  Bx('frs','rs',v=>v.toUpperCase());Bx('fsiret','siret',v=>num(v,14));Bx('fape','ape',v=>v.toUpperCase());
   Bx('frue','rue');Bx('fbat','bat');Bx('fville','ville');Bx('ftel','tel',v=>num(v,10));Bx('femail','email');
   const cpEl=document.getElementById('fcp');
   if(cpEl){cpEl.value=D.cp||'';cpEl.addEventListener('input',e=>{D.cp=num(e.target.value,5);e.target.value=D.cp;});}
@@ -923,9 +917,8 @@ function doSubmit(){
 }
 
 async function envoyerLienSignature(){
-  if(!D.consent_cgv){showErr('Le client doit accepter les CGS avant de signer.');return;}
-  if(!D.fait_a){showErr('Veuillez indiquer la ville dans le champ "Fait à".');return;}
-  if(!D.qualite){showErr('Veuillez indiquer la qualité du signataire.');return;}
+  if(!D.cons_email){showErr('Veuillez renseigner votre e-mail conseiller avant d\'envoyer le lien.');return;}
+  if(!D.cons_nom){showErr('Veuillez renseigner votre nom conseiller.');return;}
   const sigEmail=D.sig_diff&&D.sig_email?D.sig_email:D.rl_email;
   if(!sigEmail){showErr('Aucun e-mail de signataire trouvé — vérifiez l\'étape 3.');return;}
 
@@ -941,17 +934,16 @@ async function envoyerLienSignature(){
     const result=await res.json();
     if(result.error)throw new Error(result.error);
 
-    // Succès — afficher confirmation
-    const btnZone=document.getElementById('btn-envoyer-lien');
-    if(btnZone){
-      btnZone.outerHTML=`<div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:8px;padding:12px 16px;text-align:center;font-size:13px;color:#065F46;margin-top:14px">
+    const zone=document.getElementById('btn-envoyer-lien-zone');
+    if(zone){
+      zone.outerHTML=`<div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:8px;padding:14px 16px;text-align:center;font-size:13px;color:#065F46">
         ✅ Lien de signature envoyé à <strong>${sigEmail}</strong><br>
-        <span style="font-size:11px;color:#6B7280;margin-top:4px;display:block">Référence dossier : <strong>${ref}</strong></span>
+        <span style="font-size:11px;color:#6B7280;margin-top:4px;display:block">Référence : <strong>${ref}</strong> — Vous recevrez une notification dès que le client aura signé.</span>
       </div>`;
     }
   }catch(err){
     if(btn){btn.disabled=false;btn.textContent='Envoyer le lien de signature au client →';}
-    showErr('Erreur : '+err.message+' — Vérifiez votre connexion et la configuration Supabase.');
+    showErr('Erreur : '+err.message);
   }
 }
 

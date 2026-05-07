@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validation conseiller — SFR Business</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;background:#F3F4F6;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.container{max-width:680px;width:100%}
+.header{background:#1A1A2E;color:#fff;padding:14px 20px;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:10px}
+.sfr-logo{background:#E2001A;color:#fff;font-weight:500;font-size:12px;padding:3px 10px;border-radius:4px}
+.card{background:#fff;border:0.5px solid rgba(0,0,0,0.1);padding:18px;margin-bottom:10px}
+.card:last-child{border-radius:0 0 12px 12px}
+.ctitle{font-size:10px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #F3F4F6}
+.row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #F9FAFB}
+.row:last-child{border-bottom:none}
+.rl{color:#6B7280}.rv{font-weight:500;text-align:right;max-width:60%}
+.consbanner{background:#1A1A2E;color:#fff;padding:10px 14px;border-radius:8px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.consicon{background:#E2001A;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:11px;color:#6B7280;font-weight:500}
+.req{color:#E2001A}
+.field input,.field textarea{font-size:12px;padding:8px 10px;border:1px solid #D1D5DB;border-radius:6px;width:100%;font-family:inherit}
+.field input:focus,.field textarea:focus{outline:none;border-color:#E2001A;box-shadow:0 0 0 2px rgba(226,0,26,.1)}
+.chk{display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:12px;line-height:1.4;padding:6px 8px;border-radius:6px}
+.chk input{margin-top:2px;accent-color:#E2001A;width:13px;height:13px;flex-shrink:0}
+.chk-desc{font-size:10px;color:#9CA3AF;margin-top:2px}
+.alert{border-radius:6px;padding:9px 12px;font-size:11px;margin-bottom:10px;line-height:1.6}
+.alert-info{background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF}
+.alert-warn{background:#FEF3C7;border:1px solid #FCD34D;color:#92400E}
+.alert-ok{background:#D1FAE5;border:1px solid #A7F3D0;color:#065F46}
+.alert-err{background:#FEE2E2;border:1px solid #FECACA;color:#991B1B}
+.legal-box{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:6px;padding:10px 12px;font-size:11px;color:#6B7280;line-height:1.7;margin-bottom:12px}
+.legal-box b{color:#1A1A2E}
+.btn-valid{background:#10B981;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:8px;font-family:inherit}
+.btn-valid:hover{background:#059669}
+.btn-valid:disabled{background:#9CA3AF;cursor:not-allowed}
+.loading{text-align:center;padding:40px;color:#6B7280}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #E5E7EB;border-top-color:#E2001A;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-screen{text-align:center;padding:40px 20px}
+.success-icon{font-size:48px;margin-bottom:16px}
+.success-title{font-size:20px;font-weight:500;margin-bottom:8px;color:#065F46}
+.success-desc{font-size:13px;color:#6B7280;line-height:1.6}
+.recap-section{margin-bottom:8px}
+.recap-title{font-size:10px;font-weight:500;color:#9CA3AF;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="sfr-logo">SFR</div>
+    <div>
+      <div style="font-size:13px;font-weight:500">Validation conseiller</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.5)">SFR Business PRO — Zone sécurisée</div>
+    </div>
+  </div>
+  <div id="app"><div class="loading"><div class="spinner"></div><br>Chargement du dossier...</div></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CONFIGURATION SUPABASE — REMPLACER CES 2 VALEURS
+// ═══════════════════════════════════════════════════════════
+const SUPABASE_URL      = 'https://ghxbrzonqxkeuusjrjcb.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGJyem9ucXhrZXV1c2pyamNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzU2NjgsImV4cCI6MjA5MzQxMTY2OH0.DHoB0wNHe95ADUBZN83S78RfS7hV72jzthCa9E7Rt_Y';
+// ═══════════════════════════════════════════════════════════
+
+const params = new URLSearchParams(window.location.search);
+const token  = params.get('token');
+
+async function loadDossier(){
+  if(!token){
+    document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Lien invalide ou expiré.</div></div>`;
+    return;
+  }
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/dossiers?token_conseiller=eq.${token}&select=*`,{
+      headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}
+    });
+    const data=await res.json();
+    if(!data||data.length===0){
+      document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Ce lien de validation est invalide ou a déjà été utilisé.</div></div>`;
+      return;
+    }
+    const d=data[0];
+    if(d.statut==='transmis_backoffice'){
+      document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-ok">✅ Ce dossier a déjà été validé et transmis au back-office.</div></div>`;
+      return;
+    }
+    if(d.statut!=='signe_client'){
+      document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-warn">⏳ Le client n'a pas encore signé ce dossier. Vous recevrez une notification dès que ce sera fait.</div></div>`;
+      return;
+    }
+    renderValidation(d);
+  }catch(e){
+    document.getElementById('app').innerHTML=`<div class="card"><div class="alert alert-err">Erreur de chargement : ${e.message}</div></div>`;
+  }
+}
+
+function renderValidation(d){
+  const offresLabel=Array.isArray(d.offres)?d.offres.join(', '):'—';
+  const signeLeStr=d.signe_client_at?new Date(d.signe_client_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+  document.getElementById('app').innerHTML=`
+    <div class="card">
+      <div class="consbanner">
+        <div class="consicon">C</div>
+        <div><div style="font-size:12px;font-weight:500">Zone sécurisée conseiller</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Dossier en attente de votre validation</div></div>
+      </div>
+      <div class="alert alert-ok">✅ Le client a signé ce dossier le <strong>${signeLeStr}</strong>. Vous pouvez maintenant le valider et le transmettre au back-office.</div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Récapitulatif du dossier</div>
+      <div class="row"><span class="rl">Référence</span><span class="rv" style="font-family:monospace">${d.reference}</span></div>
+      <div class="row"><span class="rl">Client</span><span class="rv">${d.rs||'—'}</span></div>
+      <div class="row"><span class="rl">SIRET</span><span class="rv" style="font-family:monospace">${d.siret||'—'}</span></div>
+      <div class="row"><span class="rl">Territoire</span><span class="rv">${d.territoire||'—'}</span></div>
+      <div class="row"><span class="rl">Type</span><span class="rv">${d.dossier||'—'}</span></div>
+      <div class="row"><span class="rl">Offres</span><span class="rv">${offresLabel}</span></div>
+      <div class="row"><span class="rl">Signé par le client le</span><span class="rv">${signeLeStr}</span></div>
+      <div class="row"><span class="rl">E-mail signataire</span><span class="rv">${d.email_signature||'—'}</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Votre validation</div>
+      <div class="alert alert-warn" style="margin-bottom:12px">En validant ce dossier, vous certifiez l'exactitude des informations et engagez votre responsabilité en tant que conseiller SFR Business.</div>
+      <div class="field"><label>Commentaires internes (optionnel)</label><textarea id="v_comment" style="height:70px" placeholder="Notes internes, observations..."></textarea></div>
+      <label class="chk" style="margin-bottom:12px"><input type="checkbox" id="v_valid">
+        <div><div style="font-weight:500">Je valide ce dossier et certifie l'exactitude des informations <span class="req">*</span></div>
+        <div class="chk-desc">Cette validation déclenche la transmission au back-office et l'envoi des exemplaires finaux à toutes les parties.</div></div>
+      </label>
+      <button class="btn-valid" id="btn-valider" onclick="validerDossier('${d.reference}','${d.cons_email||''}','${d.cons_nom||''}','${d.bo_email||'backoffice@outremer-telecom.fr'}')">
+        Valider et transmettre au back-office →
+      </button>
+    </div>`;
+}
+
+async function validerDossier(reference, consEmail, consNom, boEmail){
+  const valid=document.getElementById('v_valid')?.checked;
+  if(!valid){alert('Veuillez cocher la case de validation pour confirmer votre responsabilité.');return;}
+
+  const btn=document.getElementById('btn-valider');
+  if(btn){btn.disabled=true;btn.textContent='Transmission en cours...';}
+
+  try{
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/validate-conseiller`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':'Bearer '+SUPABASE_ANON_KEY
+      },
+      body:JSON.stringify({
+        reference,
+        cons_email:consEmail,
+        cons_nom:consNom,
+        bo_email:boEmail,
+        comment:document.getElementById('v_comment')?.value||''
+      })
+    });
+    const result=await res.json();
+    if(result.error)throw new Error(result.error);
+    document.getElementById('app').innerHTML=`
+      <div class="card">
+        <div class="success-screen">
+          <div class="success-icon">✅</div>
+          <div class="success-title">Dossier transmis avec succès !</div>
+          <div class="success-desc">
+            Le dossier <strong>${reference}</strong> a été transmis au back-office.<br><br>
+            Trois e-mails ont été envoyés automatiquement :<br>
+            • Confirmation au client<br>
+            • Notification à vous (conseiller)<br>
+            • Dossier complet au back-office
+          </div>
+        </div>
+      </div>`;
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='Valider et transmettre au back-office →';}
+    alert('Erreur lors de la transmission : '+e.message);
+  }
+}
+
+loadDossier();
+</script>
+</body>
+</html>
