@@ -650,25 +650,34 @@ function rPJ(){
     'Établissement d\'enseignement libre':['Autorisation de fonctionnement délivrée par le Recteur ou l\'Inspection d\'académie','Attestation du Directeur diocésain si l\'autorisation ne désigne pas le chef d\'établissement','CNI recto/verso originale avec photographie en cours de validité']
   };
   const s=D.pj_statut,req=s&&pjmap[s]?pjmap[s]:[];
-  return `<div class="stag">Étape 8</div><div class="stitle">Pièces justificatives</div><div class="ssub">Documents requis selon le statut juridique</div>
-  <div class="alert awarn">Toutes les pièces d'identité doivent être des originaux avec photographie, en cours de validité (CNI ou Passeport). Le client certifie l'exactitude des documents remis.</div>
-  <div class="card"><div class="ctitle">Statut juridique <span class="req">*</span></div><div class="field"><select id="fpjstatut"><option value="">— Sélectionner —</option>${sts.map(x=>`<option value="${x}" ${D.pj_statut===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
-  ${s?`<div class="card"><div class="ctitle">Documents requis — ${s}</div><div style="display:flex;flex-direction:column;gap:8px">
-    ${req.map((p,i)=>`<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-        <div style="width:18px;height:18px;border-radius:50%;background:rgba(226,0,26,.1);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">${i+1}</div>
-        <div style="font-size:12px;font-weight:500;flex:1">${p}</div><span class="badge breq">Obligatoire</span>
-      </div>
-      <div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer">
-        <div style="font-size:11px;color:var(--color-text-secondary)">Cliquer pour joindre le document</div>
-        <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:3px">PDF, JPG ou PNG — 5 Mo max</div>
-      </div></div>`).join('')}
-  </div></div>
-  <div class="card"><div class="ctitle">Documents communs</div><div style="display:flex;flex-direction:column;gap:8px">
-    <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:8px">RIB au nom du titulaire du contrat <span class="req">*</span></div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Joindre le RIB</div></div></div>
-    ${D.sig_diff?`<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:8px">Pouvoir du représentant légal en faveur du signataire <span class="req">*</span></div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Joindre le pouvoir</div></div></div>`:''}
-    <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px"><div style="font-size:12px;font-weight:500;margin-bottom:3px">Justificatif de domicile / siège de moins de 3 mois</div><div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:8px">Si l'adresse du Kbis / SIREN diffère de l'adresse du contrat</div><div style="border:1px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;background:var(--color-background-secondary);cursor:pointer"><div style="font-size:11px;color:var(--color-text-secondary)">Facture EDF, eau ou télécom — si applicable</div></div></div>
-  </div></div>`:'<div class="card"><div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:16px">Sélectionnez le statut juridique pour afficher les documents requis.</div></div>'}`;
+  const communs=['RIB au nom du titulaire du contrat'];
+  if(D.sig_diff)communs.push('Pouvoir du représentant légal en faveur du signataire');
+  communs.push('Justificatif de domicile/siège -3 mois (si adresse Kbis différente du contrat)');
+  return `<div class="stag">Étape 8</div><div class="stitle">Pièces justificatives</div><div class="ssub">Sélectionnez le statut juridique — le client devra uploader ces documents lors de la signature</div>
+  <div class="alert ainfo">Les documents listés ci-dessous seront demandés au client au moment de sa signature électronique. L'upload se fait directement dans le lien de signature envoyé par e-mail.</div>
+  <div class="card"><div class="ctitle">Statut juridique <span class="req">*</span></div>
+    <div class="field"><select id="fpjstatut"><option value="">— Sélectionner —</option>${sts.map(x=>`<option value="${x}" ${D.pj_statut===x?'selected':''}>${x}</option>`).join('')}</select></div>
+  </div>
+  ${s?`
+  <div class="card"><div class="ctitle">Documents spécifiques — ${s}</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${req.map((p,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)">
+        <div style="width:20px;height:20px;border-radius:50%;background:rgba(226,0,26,.1);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;margin-top:1px">${i+1}</div>
+        <div style="flex:1;font-size:12px">${p}</div>
+        <span class="badge breq" style="flex-shrink:0">Obligatoire</span>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card"><div class="ctitle">Documents communs à tous les dossiers</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${communs.map((p,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)">
+        <div style="width:20px;height:20px;border-radius:50%;background:rgba(16,185,129,.1);color:#10B981;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;margin-top:1px">${req.length+i+1}</div>
+        <div style="flex:1;font-size:12px">${p}</div>
+        <span class="badge breq" style="flex-shrink:0">${i===communs.length-1?'Si applicable':'Obligatoire'}</span>
+      </div>`).join('')}
+    </div>
+    <div class="alert ainfo" style="margin-top:10px;font-size:11px">Total : <strong>${req.length+communs.length} document(s)</strong> à fournir par le client lors de la signature.</div>
+  </div>`:'<div class="card"><div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:16px">Sélectionnez le statut juridique pour afficher la liste des documents requis.</div></div>'}`;
 }
 
 /* ── ÉTAPE 9 : SEPA ── */
@@ -768,13 +777,6 @@ function rRecap(){
   <div class="alert ainfo">
     Le lien de signature électronique sera envoyé à : <b>${sigEmail}</b><br>
     <span style="font-size:10px">${D.sig_diff?'E-mail du signataire (différent du représentant légal)':'E-mail du représentant légal'}</span>
-  </div>
-  <div class="card"><div class="ctitle">Processus de validation — 100% distance</div>
-    <div class="wfstep"><div class="wfnum cur">1</div><div><div class="wftitle">Conseiller complète l'étape 11 et envoie le lien</div><div class="wfdesc">Après avoir renseigné ses informations à l'étape 11, le conseiller déclenche l'envoi du lien de signature au client.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">2</div><div><div class="wftitle">Client signe via le lien sécurisé</div><div class="wfdesc">Le client reçoit l'e-mail, consulte le récapitulatif complet, accepte les CGS et signe électroniquement.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">3</div><div><div class="wftitle">Notification au conseiller</div><div class="wfdesc">Dès la signature client validée, le conseiller reçoit un e-mail avec un lien de validation sécurisé.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Conseiller valide via son lien sécurisé</div><div class="wfdesc">Le conseiller clique son lien, accède à la page de validation et confirme le dossier.</div></div></div>
-    <div class="wfstep"><div class="wfnum wait">5</div><div><div class="wftitle">Transmission automatique au back-office</div><div class="wfdesc">Le dossier complet est transmis. Client, conseiller et back-office reçoivent chacun un exemplaire.</div></div></div>
   </div>`;
 }
 
@@ -793,6 +795,13 @@ function rCons(){
   </div>
   <div class="card"><div class="ctitle">Commentaires internes</div>
     <textarea style="width:100%;height:80px;resize:vertical;font-family:var(--font-sans)" placeholder="Notes internes, conditions particulières..." oninput="D.cons_comment=this.value">${D.cons_comment||''}</textarea>
+  </div>
+  <div class="card"><div class="ctitle">Rappel — Processus de validation 100% distance</div>
+    <div class="wfstep"><div class="wfnum cur">1</div><div><div class="wftitle">Vous envoyez le lien de signature au client</div><div class="wfdesc">En cliquant ci-dessous, le client reçoit par e-mail un lien sécurisé pour consulter le récapitulatif, uploader ses pièces justificatives et signer.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">2</div><div><div class="wftitle">Le client signe</div><div class="wfdesc">Le client consulte le récapitulatif complet, joint ses pièces justificatives, accepte les CGS et signe électroniquement.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">3</div><div><div class="wftitle">Vous recevez une notification</div><div class="wfdesc">Dès la signature client validée, vous recevez un e-mail à <strong>${D.cons_email||'votre adresse conseiller'}</strong> avec un lien de validation sécurisé.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">4</div><div><div class="wftitle">Vous validez via votre lien sécurisé</div><div class="wfdesc">Vous cliquez votre lien, accédez à la page de validation et confirmez le dossier. Cette étape engage votre responsabilité.</div></div></div>
+    <div class="wfstep"><div class="wfnum wait">5</div><div><div class="wftitle">Transmission automatique au back-office</div><div class="wfdesc">Le dossier complet est transmis à <strong>${D.bo_email||'le back-office'}</strong>. Client, conseiller et back-office reçoivent chacun un exemplaire.</div></div></div>
   </div>
   <div class="card" style="border-color:#10B981">
     <div class="ctitle" style="color:#065F46">Envoyer le lien de signature au client</div>
