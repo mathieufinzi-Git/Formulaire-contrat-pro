@@ -162,8 +162,43 @@ function buildRecapHTML(d){
     <div class="row"><span class="rl">Société</span><span class="rv">${fact.soc||d.rs||'—'}</span></div>
     <div class="row"><span class="rl">Adresse</span><span class="rv">${[fact.rue||d.rue,fact.cp||d.cp,fact.ville||d.ville].filter(Boolean).join(', ')||'—'}</span></div>
     <div class="section-title">Offres souscrites</div>`;
-  if(offres.length===0)html+=`<div style="font-size:12px;color:#9CA3AF;padding:4px 0">Aucune offre sélectionnée</div>`;
-  else offres.forEach(o=>{html+=`<div class="row"><span class="rl" style="font-weight:500">${names[o]||o}</span><span class="rv" style="color:#10B981">✓ Sélectionné</span></div>`;});
+  if(offres.length===0){
+    html+=`<div style="font-size:12px;color:#9CA3AF;padding:4px 0">Aucune offre sélectionnée</div>`;
+  } else {
+    offres.forEach(o=>{
+      html+=`<div style="padding:6px 0 2px;font-size:12px;font-weight:600;color:#1A1A2E;border-bottom:1px solid #E2001A;margin-bottom:4px">${names[o]||o}</div>`;
+      if(o==='mobile'&&Array.isArray(d.mob_lines)){
+        d.mob_lines.forEach((ln,i)=>{
+          if(!ln.f)return;
+          html+=`<div class="row"><span class="rl">Ligne ${i+1} — Forfait</span><span class="rv">${ln.f.toUpperCase()}</span></div>`;
+          html+=`<div class="row"><span class="rl">Ligne ${i+1} — Formule</span><span class="rv">${ln.formule||'—'}</span></div>`;
+          if(ln.terminal)html+=`<div class="row"><span class="rl">Ligne ${i+1} — Terminal</span><span class="rv">${ln.terminal}${ln.prix?' — '+ln.prix+' € HT':''}</span></div>`;
+        });
+      }
+      if(o==='carre'&&Array.isArray(d.carre_lines)){
+        d.carre_lines.forEach((ln,i)=>{
+          if(!ln.g10&&!ln.g50)return;
+          html+=`<div class="row"><span class="rl">Ligne ${i+1}</span><span class="rv">${ln.g10?'10 Go — 9,99 €/mois':'50 Go — 19,99 €/mois'}${ln.mod?' · '+ln.mod:''}</span></div>`;
+        });
+      }
+      if(o==='box'){
+        html+=`<div class="row"><span class="rl">Offre</span><span class="rv">${d.box_offre==='300'?'4G PRO 300 Go — 44,99 €/mois':'4G/5G PRO 500 Go — 74,99 €/mois'}</span></div>`;
+        if(d.box_elig)html+=`<div class="row"><span class="rl">ID éligibilité</span><span class="rv">${d.box_elig}</span></div>`;
+        html+=`<div class="row"><span class="rl">Option Service TV</span><span class="rv">${d.box_tv?'Oui':'Non'}</span></div>`;
+      }
+      if(o==='fibre'){
+        html+=`<div class="row"><span class="rl">Type</span><span class="rv">${{new:'Nouvel accès Fibre',migr:'Migration ADSL/Box 4G vers Fibre',modif:"Modification d'offre"}[d.fibre_type]||'—'}</span></div>`;
+        if(d.fibre_offre)html+=`<div class="row"><span class="rl">Offre Fibre</span><span class="rv">${d.fibre_offre}</span></div>`;
+        if(d.fibre_elig)html+=`<div class="row"><span class="rl">Code éligibilité</span><span class="rv">${d.fibre_elig}</span></div>`;
+        if(d.fibre_rue||d.fibre_commune)html+=`<div class="row"><span class="rl">Adresse installation</span><span class="rv">${[d.fibre_rue,d.fibre_commune,d.fibre_cp].filter(Boolean).join(', ')}</span></div>`;
+        if(d.fibre_secours)html+=`<div class="row"><span class="rl">Numéro de secours</span><span class="rv">${d.fibre_secours}</span></div>`;
+      }
+      if(o==='box4g'){
+        html+=`<div class="row"><span class="rl">Tarif</span><span class="rv">17,00 € HT/mois — Engagement 12 mois</span></div>`;
+        if(d.b4g_elig)html+=`<div class="row"><span class="rl">ID éligibilité</span><span class="rv">${d.b4g_elig}</span></div>`;
+      }
+    });
+  }
   if(d.port_demande)html+=`
     <div class="section-title">Portabilité</div>
     <div class="row"><span class="rl">Numéro à porter</span><span class="rv">${d.port_num||'—'}</span></div>
