@@ -181,9 +181,10 @@ function buildPJHTML(d){
   const docs=PJ_MAP[d.pj_statut||'']||[];
   const communs=['RIB au nom du titulaire du contrat'];
   if(d.sig_diff)communs.push('Pouvoir du représentant légal en faveur du signataire');
+  const facultatifs=['Justificatif de domicile/siège de moins de 3 mois (si adresse Kbis différente du contrat)'];
   const allDocs=[...docs,...communs];
   if(allDocs.length===0)return `<div class="alert alert-info">Aucun document requis identifié — vérifiez avec votre conseiller.</div>`;
-  let html=`<div class="alert alert-info" style="margin-bottom:12px">Statut juridique : <strong>${d.pj_statut||'Non renseigné'}</strong><br>Veuillez joindre les <strong>${allDocs.length} document(s)</strong> ci-dessous. Formats : PDF, JPG, PNG — 5 Mo max par fichier.</div>`;
+  let html=`<div class="alert alert-info" style="margin-bottom:12px">Statut juridique : <strong>${d.pj_statut||'Non renseigné'}</strong><br>Veuillez joindre les <strong>${allDocs.length} document(s) obligatoire(s)</strong> ci-dessous. Formats : PDF, JPG, PNG — 5 Mo max par fichier.</div>`;
   allDocs.forEach((doc,i)=>{
     html+=`<div class="upload-item">
       <div class="upload-label">
@@ -194,6 +195,24 @@ function buildPJHTML(d){
         <input type="file" id="file_${i}" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(${i},this.files[0])">
         <div id="uc_${i}" style="pointer-events:none">
           <div class="upload-txt">📎 Cliquer pour joindre ou glisser-déposer</div>
+          <div class="upload-hint">PDF, JPG ou PNG — 5 Mo max</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  // Documents facultatifs
+  html+=`<div style="margin-top:12px;margin-bottom:6px;font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:.5px">Documents facultatifs</div>`;
+  facultatifs.forEach((doc,i)=>{
+    const idx=allDocs.length+i;
+    html+=`<div class="upload-item" style="background:#FFFBEB;border-color:#FCD34D">
+      <div class="upload-label">
+        <span>${idx+1}. ${doc}</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:20px;background:#FEF3C7;color:#92400E;font-weight:500;flex-shrink:0">Facultatif</span>
+      </div>
+      <div class="upload-zone" id="zone_${idx}" ondragover="dragOver(event,${idx})" ondragleave="dragLeave(event,${idx})" ondrop="drop(event,${idx})">
+        <input type="file" id="file_${idx}" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(${idx},this.files[0])">
+        <div id="uc_${idx}" style="pointer-events:none">
+          <div class="upload-txt">📎 Cliquer pour joindre si applicable</div>
           <div class="upload-hint">PDF, JPG ou PNG — 5 Mo max</div>
         </div>
       </div>
@@ -337,7 +356,8 @@ async function signer(){
         reference:d.reference,
         fait_a,
         qualite,
-        consent_mkt:document.getElementById('mkt')?.checked||false,
+        consent_cgv: document.getElementById('cgv')?.checked || false,
+        consent_mkt: document.getElementById('mkt')?.checked || false,
         pj_urls:pjUrls
       })
     });
